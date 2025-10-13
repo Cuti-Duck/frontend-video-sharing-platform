@@ -1,3 +1,32 @@
+1. Cấu trúc thư mục
+   src/
+   ├── app/ # App Router: pages & layouts
+   ├── components/ # Shared components
+   ├── hooks/ # Custom hooks
+   ├── lib/ # Helper, API clients
+   ├── types/ # TypeScript types
+   ├── styles/ # CSS/SCSS or Tailwind config
+   └── utils/ # Utility functions
+
+2. Quy tắc giao diện (UI)
+
+   Sử dụng Tailwind CSS cho toàn bộ style.
+
+   Component dùng chung đặt trong components/.
+
+   Giữ component nhỏ, tái sử dụng, có kiểu rõ ràng.
+
+   Ưu tiên dùng shadcn/ui và icon từ lucide-react để đồng bộ thiết kế.
+
+3. Quy tắc đặt tên
+
+| Loại            | Quy tắc                   | Ví dụ                 |
+| --------------- | ------------------------- | --------------------- |
+| Component       | PascalCase                | `VideoCard.tsx`       |
+| Hook            | camelCase + tiền tố `use` | `useFetchData.ts`     |
+| Thư mục         | kebab-case                | `video-list/`         |
+| Biến môi trường | CHỮ HOA + GẠCH DƯỚI       | `NEXT_PUBLIC_API_URL` |
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
