@@ -60,6 +60,73 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
+
+flowchart TB
+  subgraph UserSide
+    U[User Browser]
+  end
+
+  subgraph CDN
+    CF[CloudFront CDN]
+  end
+
+  subgraph LoadBalancer
+    ALB1[ALB - Frontend]
+    ALB2[ALB - Backend]
+  end
+
+  subgraph ECS
+    FE[ECS Fargate - Frontend Service]
+    BE[ECS Fargate - .NET Backend Service]
+  end
+
+  subgraph AWS_Auth
+    Cognito[Cognito - Auth Service]
+  end
+
+  subgraph Storage
+    S3[S3 - Video & Thumbnail Storage]
+  end
+
+  subgraph Queue
+    SQS[SQS - Transcode Queue]
+  end
+
+  subgraph Processing
+    Lambda[Lambda - Trigger MediaConvert]
+    MediaConvert[MediaConvert - Video Transcoding]
+  end
+
+  subgraph DB
+    Dynamo[DynamoDB - Metadata]
+  end
+
+  subgraph Monitoring
+    CW[CloudWatch / X-Ray]
+  end
+
+  %% Connections
+  U --> CF
+  CF --> ALB1
+  CF --> ALB2
+  ALB1 --> FE
+  ALB2 --> BE
+  FE --> BE
+  BE --> Cognito
+  BE --> S3
+  BE --> Dynamo
+  BE --> SQS
+  S3 --> SQS
+  SQS --> Lambda
+  Lambda --> MediaConvert
+  MediaConvert --> S3
+  MediaConvert --> Dynamo
+  BE --> CW
+  Lambda --> CW
+  MediaConvert --> CW
+  S3 --> CF
+
+
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
