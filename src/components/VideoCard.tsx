@@ -1,5 +1,6 @@
 import { Video } from "@/types";
 import { Play } from "lucide-react";
+import Link from "next/link";
 
 interface VideoCardProps {
   video: Video;
@@ -7,7 +8,7 @@ interface VideoCardProps {
 
 export function VideoCard({ video }: VideoCardProps) {
   return (
-    <div className="group cursor-pointer">
+    <Link href={`/watch/${video.id}`} className="group cursor-pointer block">
       <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
         <img 
           src={video.thumbnailUrl}
@@ -23,6 +24,6 @@ export function VideoCard({ video }: VideoCardProps) {
         <p className="text-sm text-gray-600 mt-1">{video.author.name}</p>
         <p className="text-sm text-gray-500">{video.viewCount} views</p>
       </div>
-    </div>
+    </Link>
   );
 }
