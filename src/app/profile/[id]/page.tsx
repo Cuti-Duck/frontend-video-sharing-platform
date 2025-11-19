@@ -1,8 +1,30 @@
-export default function ProfilePage() {
+import { ChannelCard } from "@/components/ChannelCard";
+import { getUserById, getVideoCountByUserId } from "@/lib/mockData";
+import { notFound } from "next/navigation";
+
+interface ProfilePageProps {
+  params: { id: string };
+}
+
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { id } = await params;
+  const user = getUserById(id);
+
+  if (!user) {
+    notFound();
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Profile Page</h1>
-      <p>This is the profile page.</p>
+    <div className="flex flex-col items-right gap-6 p-6">
+        <ChannelCard userId={user.id} 
+                    avatarUrl={user.avatarUrl} 
+                    name={user.name} 
+                    subscribersCount={user.subscribersCount} 
+                    videoCount={getVideoCountByUserId(user.id)} 
+        />
+
+      
+
     </div>
   );
 }

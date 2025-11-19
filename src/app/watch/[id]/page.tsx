@@ -2,7 +2,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { SmallVideoCard } from "@/components/SmallVideoCard";
 import { getVideoById, getRelatedVideos, getUserById } from "@/lib/mockData";
 import { notFound } from "next/navigation";
-import { ChannelCard } from "@/components/ChannelCard";
+import { SmallChannelCard } from "@/components/SmallChannelCard";
 import { SubcribeButton } from "@/components/SubcribeButton";
 import { LikeButton } from "@/components/LikeButton";
 import { DescriptionCard } from "@/components/DescriptionCard";
@@ -34,7 +34,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
           {/* Video Info */}
           <div className="flex justify-between">
             <div className="flex items-center mt-4 mb-6">
-              <ChannelCard
+              <SmallChannelCard
                 userId={user?.id || ""}
                 avatarUrl={user?.avatarUrl || ""}   
                 name={user?.name || "Unknown"}

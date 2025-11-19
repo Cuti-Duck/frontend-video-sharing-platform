@@ -8,11 +8,22 @@ export const mockUser: User[] = [
     email: "fpt.gmail.com",
     avatarUrl: "https://d199lg8q7t4hmc.cloudfront.net/thumnails/Screenshot%202025-10-21%20135247.png",
     subscribersCount: 1200,
+  },
+  {
+    id: "2",
+    name: "Huy",
+    email: "fpt.gmail.com",
+    avatarUrl: "https://d199lg8q7t4hmc.cloudfront.net/thumnails/Screenshot%202025-10-21%20135247.png",
+    subscribersCount: 0,
   }
 ]
 
 export function getUserById(id: string): User | undefined {
   return mockUser.find(user => user.id === id);
+}
+
+export function getVideoCountByUserId(userId: string): number {
+  return mockVideos.filter(video => video.userId === userId).length;
 }
 
 export const mockVideos: Video[] = [

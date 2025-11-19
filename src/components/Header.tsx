@@ -8,7 +8,7 @@ export function Header() {
   const { toggleSidebar } = useSidebar();
   return (
     <header className="border-gray-200 sticky top-0 z-50">
-      <div className="px-4 py-3 flex items-center justify-between">
+      <div className="bg-black px-4 py-3 flex items-center justify-between">
 
         <button
           aria-label="Menu"

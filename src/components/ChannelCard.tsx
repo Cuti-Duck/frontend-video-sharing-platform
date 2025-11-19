@@ -1,17 +1,22 @@
-import Link from "next/link";
+import { SubcribeButton } from "./SubcribeButton";
 
-export function ChannelCard({userId, avatarUrl, name, subscribersCount }: { userId: string; avatarUrl: string; name: string; subscribersCount: number }) {
+interface ChannelCardProps {
+    userId: string;
+    avatarUrl: string;
+    name: string;
+    subscribersCount: number;
+    videoCount: number;
+}
+
+export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCount}: ChannelCardProps) {
     return (
-        <Link href={`/channel/${userId}`}>
-        <div className="inline-flex items-center gap-4 p-4 rounded-lg shadow transition-shadow cursor-pointer">
-            <div className="flex-shrink-0">
-                <img src={avatarUrl} alt={name} className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full"/>
-            </div>
-            <div className="flex flex-col min-w-0">
-                <p className="font-medium text-base sm:text-lg line-clamp-1">{name}</p>
-                <p className="text-sm text-gray-500">{subscribersCount} subcribers</p>
+        <div className="flex gap-6">
+            <img src={avatarUrl} alt={name} className="w-[10%] aspect-square object-cover rounded-full"/>
+            <div className="flex flex-col gap-2">
+                <div className="text-5xl font-bold">{name}</div>
+                <div className="text-xl text-gray-500">{subscribersCount} subscribers • {videoCount} videos</div>
+                <div className="w-[20%]"><SubcribeButton userId={userId}/></div>
             </div>
         </div>
-        </Link>
     );
 }
