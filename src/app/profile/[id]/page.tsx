@@ -1,4 +1,5 @@
 import { ChannelCard } from "@/components/ChannelCard";
+import TabMenu from "@/components/TabMenu";
 import { getUserById, getVideoCountByUserId } from "@/lib/mockData";
 import { notFound } from "next/navigation";
 
@@ -16,15 +17,16 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   return (
     <div className="flex flex-col items-right gap-6 p-6">
-        <ChannelCard userId={user.id} 
+        <ChannelCard userId={user.userId} 
                     avatarUrl={user.avatarUrl} 
                     name={user.name} 
                     subscribersCount={user.subscribersCount} 
-                    videoCount={getVideoCountByUserId(user.id)} 
+                    videoCount={getVideoCountByUserId(user.userId)} 
         />
 
       
-
+      {/* TAB HEADER */}
+        <TabMenu userId={user.userId}/>
     </div>
   );
 }

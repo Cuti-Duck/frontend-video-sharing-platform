@@ -32,26 +32,26 @@ export default async function WatchPage({ params }: WatchPageProps) {
           />
           
           {/* Video Info */}
-          <div className="flex justify-between">
+          <div className="flex justify-between px-3">
             <div className="flex items-center mt-4 mb-6">
               <SmallChannelCard
-                userId={user?.id || ""}
+                userId={user?.userId || ""}
                 avatarUrl={user?.avatarUrl || ""}   
                 name={user?.name || "Unknown"}
                 subscribersCount={user?.subscribersCount || 0}
                 />
-              <SubcribeButton userId={user?.id || ""}/>
+              <SubcribeButton userId={user?.userId || ""}/>
             </div>
             <div className="flex items-center">
-              <LikeButton videoId={video.id} likeCount={video.likeCount} />
+              <LikeButton videoId={video.videoId} likeCount={video.likeCount} />
             </div>
           </div>
             
           {/* Video Description */}
-          <div>
+          <div className="px-3 py-1">
             <DescriptionCard 
               viewCount={video.viewCount}
-              uploadAt={video.uploadedAt}
+              uploadAt={video.createdAt}
               description={video.description}
             />
           </div>
@@ -60,15 +60,15 @@ export default async function WatchPage({ params }: WatchPageProps) {
         {/* Related Videos Sidebar */}
         <div className="lg:col-span-1">
           
-          {getRelatedVideos(video.id).map((videos) => (
+          {getRelatedVideos(video.videoId).map((videos) => (
               <SmallVideoCard 
-                key={videos.id}
-                videoId={videos.id}
+                key={videos.videoId}
+                videoId={videos.videoId}
                 thumbnailUrl={videos.thumbnailUrl}
                 title={videos.title}
                 userName={getUserById(videos.userId)?.name || "Unknown"}
                 viewCount={video.viewCount}
-                uploadAt={video.uploadedAt} />
+                uploadAt={video.createdAt} />
           ))}
         </div>
       </div>

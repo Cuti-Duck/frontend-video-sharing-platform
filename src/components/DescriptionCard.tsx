@@ -15,7 +15,7 @@ export function DescriptionCard({viewCount, uploadAt, description}: DescriptionC
     return (
         <div className="bg-[#D1D5DB]/20 rounded-lg px-4 py-3 mb-6">
             <p className="text-lg font-bold">{viewCount} views • {uploadAt}</p>
-            <p className={`text-lg font-semibold ${expanded ? "line-clamp-none" : "line-clamp-2"} transition-all`}>{description}</p>
+            <p className={`text-md ${expanded ? "line-clamp-none" : "line-clamp-2"} transition-all`}>{description}</p>
             {description.split(" ").length > 20 && (
                 <button
                 onClick={toggleExpanded}

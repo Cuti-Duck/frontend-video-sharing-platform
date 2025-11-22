@@ -12,12 +12,12 @@ interface VideoCardProps {
 
 export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt }: VideoCardProps) {
   return (
-    <Link href={`/watch/${videoId}`} className="flex gap-2 mb-3">
+    <Link href={`/watch/${videoId}`} className="flex gap-2 mb-3 ">
       <div className="w-[50%] aspect-video bg-gray-100 rounded overflow-hidden flex-shrink-0">
         <img 
           src={thumbnailUrl}
           alt={title}
-          className="w-full object-cover transition-transform"
+          className="block w-full h-auto object-cover transition-transform"
         />
         <div className="bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
           <Play className="w-6 h-6 text-white" />
