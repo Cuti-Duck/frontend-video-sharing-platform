@@ -10,3 +10,15 @@ export interface User {
   createdAt: string;
   subscribersCount: number;
 }
+
+export interface UserResponse {
+    userId: string;
+    name: string;
+    email: string;
+    avatarUrl: string;
+    phoneNumber: string;
+    gender: string;
+    birthDate: string;
+    channelId: string;
+    createdAt: string;
+}

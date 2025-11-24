@@ -11,7 +11,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   (config) => {
     // Lấy token từ localStorage
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,14 +24,14 @@ axiosClient.interceptors.request.use(
 
 // ===== RESPONSE INTERCEPTOR =====
 axiosClient.interceptors.response.use(
-  (response) => response.data, // Trả ra trực tiếp data
+  (response) => response, // Trả ra trực tiếp data
   (error) => {
     // Xử lý lỗi chung
     console.error("API Error:", error);
 
     if (error.response?.status === 401) {
       // Token hết hạn → logout
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       window.location.href = "/login";
     }
 

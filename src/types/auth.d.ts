@@ -22,5 +22,9 @@ export interface Login {
 }
 
 export interface LoginResponse {
-  status: string;
+  success: string;
+  message: string;
+  accessToken: string;
+  idToken: string;
+  refreshToken: string;
 }

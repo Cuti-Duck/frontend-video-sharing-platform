@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Modal from './Modal';
-import AuthApi from '@/lib/authApi'
+import AuthApi from '@/lib/authApi';
+import { useAuth } from '@/context/AuthContext';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -14,16 +15,19 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+      
     // TODO: Implement actual login logic
     try {
       console.log("data is sending");
       const response = await AuthApi.Login({ email, password });
-
+      
+      login(response.data.accessToken);
+      onClose();
     }catch (error) {
       console.error('Error during login:', error);
     }finally {

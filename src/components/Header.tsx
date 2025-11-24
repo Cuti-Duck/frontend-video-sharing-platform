@@ -4,13 +4,19 @@ import Link from "next/link";
 import { Search, Upload, User } from "lucide-react";
 import { useSidebar } from "@/context/SidebarContext";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import { DownDropMenu } from "./DownDropMenu";
 
 export function Header() {
   const { toggleSidebar } = useSidebar();
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showinfor, setShowInfo] = useState(false);
+  
+  console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
   return (
     <header className="border-gray-200 sticky top-0 z-50">
       <div className="bg-black px-4 py-3 flex items-center justify-between">
@@ -66,13 +72,31 @@ export function Header() {
             <Upload className="w-5 h-5" />
             <span>Upload</span>
           </Link>
-          <button 
-            onClick={() => setShowLogin(true)}
-            className="flex items-center space-x-1 text-white-800 hover:text-red-600"
-          >
-            <User className="w-5 h-5" />
-            <span>Đăng nhập</span>
-          </button>
+          {isLoading ? (
+            <span className="text-white text-sm">Loading...</span>
+          ) : isAuthenticated ? (
+            <div className="flex items-center space-x-2">
+              {/* <Link href={`/profile/${user?.userId}`}>
+                <img src={user?.avatarUrl} alt="avatar" className="w-10 aspect-square object-cover rounded-full"/>
+              </Link>
+              <button 
+                onClick={logout}
+                className="flex items-center space-x-1 text-white-800 hover:text-red-600"
+              >
+                <User className="w-5 h-5" />
+                <span>Đăng xuất</span>
+              </button> */}
+              <DownDropMenu userId={user?.userId} avatarUrl={user?.avatarUrl} name={user?.name} logout={logout} ></DownDropMenu>
+            </div>
+          ) : (
+            <button 
+              onClick={() => setShowLogin(true)}
+              className="flex items-center space-x-1 text-white-800 hover:text-red-600"
+            >
+              <User className="w-5 h-5" />
+              <span>Đăng nhập</span>
+            </button>
+          )}
         </div>
       </div>
       <LoginModal 

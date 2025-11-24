@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
 import { SidebarProvider } from "@/context/SidebarContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,15 +31,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SidebarProvider>
-          <Header />
-          <div className="flex">
-            <SideBar />
-            <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
-              {children}
-            </main>
-          </div>
-        </SidebarProvider>
+        <AuthProvider>
+          <SidebarProvider>
+            <Header />
+            <div className="flex">
+              <SideBar />
+              <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
+        </AuthProvider>
       </body>
     </html>
   );
