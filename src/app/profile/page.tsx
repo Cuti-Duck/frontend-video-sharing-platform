@@ -1,17 +1,14 @@
+'use client'
+
 import { ChannelCard } from "@/components/ChannelCard";
 import TabMenu from "@/components/TabMenu";
-import { getUserById, getVideoCountByUserId } from "@/lib/mockData";
+import { useAuth } from "@/context/AuthContext";
 import { notFound } from "next/navigation";
 
-interface ProfilePageProps {
-  params: { id: string };
-}
+export default function ProfilePage() {
+  const { user, isAuthenticated } = useAuth();
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
-  const { id } = await params;
-  const user = getUserById(id);
-
-  if (!user) {
+  if (!isAuthenticated || !user) {
     notFound();
   }
 
@@ -20,8 +17,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <ChannelCard userId={user.userId} 
                     avatarUrl={user.avatarUrl} 
                     name={user.name} 
-                    subscribersCount={user.subscribersCount} 
-                    videoCount={getVideoCountByUserId(user.userId)} 
+                    subscribersCount= {0}
+                    videoCount={0} 
         />
 
       

@@ -14,7 +14,6 @@ export function Header() {
   const { user, isAuthenticated, logout, isLoading } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [showinfor, setShowInfo] = useState(false);
   
   console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
   return (
