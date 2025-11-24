@@ -3,9 +3,14 @@
 import Link from "next/link";
 import { Search, Upload, User } from "lucide-react";
 import { useSidebar } from "@/context/SidebarContext";
+import { useState } from "react";
+import LoginModal from "./LoginModal";
+import RegisterModal from "./RegisterModal";
 
 export function Header() {
   const { toggleSidebar } = useSidebar();
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   return (
     <header className="border-gray-200 sticky top-0 z-50">
       <div className="bg-black px-4 py-3 flex items-center justify-between">
@@ -61,12 +66,32 @@ export function Header() {
             <Upload className="w-5 h-5" />
             <span>Upload</span>
           </Link>
-          <Link href="/auth/login" className="flex items-center space-x-1 text-white-800 hover:text-red-600">
+          <button 
+            onClick={() => setShowLogin(true)}
+            className="flex items-center space-x-1 text-white-800 hover:text-red-600"
+          >
             <User className="w-5 h-5" />
             <span>Đăng nhập</span>
-          </Link>
+          </button>
         </div>
       </div>
+      <LoginModal 
+        isOpen={showLogin} 
+        onClose={() => setShowLogin(false)}
+        onSwitchToRegister={() => {
+          setShowLogin(false);
+          setShowRegister(true);
+        }}
+      />
+      <RegisterModal 
+        isOpen={showRegister} 
+        onClose={() => setShowRegister(false)}
+        onSwitchToLogin={() => {
+          setShowRegister(false);
+          setShowLogin(true);
+        }}
+      
+      />
     </header>
 
   );

@@ -18,7 +18,7 @@ export function SideBar() {
         <div className="flex flex-col gap-1">
           <Link
             href="/"
-            className={`flex items-center rounded-lg hover:bg-gray-100 transition-colors
+            className={`flex items-center rounded-lg hover:bg-[#838383] transition-colors
               ${isExpanded ? "px-3 py-2" : "p-2 justify-center"}`}
           >
             <Home className="w-5 h-5" />
@@ -27,7 +27,7 @@ export function SideBar() {
 
           <Link
             href="/trending"
-            className={`flex items-center rounded-lg hover:bg-gray-100 transition-colors
+            className={`flex items-center rounded-lg hover:bg-[#838383] transition-colors
               ${isExpanded ? "px-3 py-2" : "p-2 justify-center"}`}
           >
             <TrendingUp className="w-5 h-5" />
@@ -41,24 +41,24 @@ export function SideBar() {
 
             {isExpanded && (
               <>
-                <Link href="/history" className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100">
+                <Link href="/history" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                   <Clock className="w-5 h-5" />
                   <span className="ml-3">Lịch sử</span>
                 </Link>
 
-                <Link href="/liked" className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100">
+                <Link href="/liked" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                   <ThumbsUp className="w-5 h-5" />
                   <span className="ml-3">Video đã thích</span>
                 </Link>
 
                 <hr className="my-3" />
 
-                <Link href="/profile" className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100">
+                <Link href="/profile" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                   <User className="w-5 h-5" />
                   <span className="ml-3">Kênh của tôi</span>
                 </Link>
 
-                <Link href="/settings" className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100">
+                <Link href="/settings" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                   <Settings className="w-5 h-5" />
                   <span className="ml-3">Cài đặt</span>
                 </Link>

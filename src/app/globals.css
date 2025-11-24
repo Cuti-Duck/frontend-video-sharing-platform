@@ -1,8 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #0a0a0a;
+    --foreground: #ededed;
+}
+
+h3 {
+  color: #ededed;
+}
+
+h4 {
+  color: #808080;
+}
+
+.modal-content {
+  background-color: #2f2f2f;
+}
+
+input {
+  background-color: #1a1a1a;
+  color: #ededed;
+  border-color: #838383;
+}
+
+select {
+  background-color: #1a1a1a;
+  color: #ededed;
+  border-color: #838383;
 }
 
 @theme inline {

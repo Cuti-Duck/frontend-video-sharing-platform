@@ -13,11 +13,11 @@ interface VideoCardProps {
 export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt }: VideoCardProps) {
   return (
     <Link href={`/watch/${videoId}`} className="flex gap-2 mb-3 ">
-      <div className="w-[50%] aspect-video bg-gray-100 rounded overflow-hidden flex-shrink-0">
+      <div className="w-[50%] bg-gray-100 rounded overflow-hidden flex-shrink-0">
         <img 
           src={thumbnailUrl}
           alt={title}
-          className="block w-full h-auto object-cover transition-transform"
+          className="block w-full h-auto aspect-video object-cover transition-transform"
         />
         <div className="bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
           <Play className="w-6 h-6 text-white" />
@@ -25,8 +25,8 @@ export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCou
       </div>  
       <div className="flex-1">
         <h3 className="font-bold line-clamp-2 text-lg">{title}</h3>
-        <p className="text-md text-gray-600 mt-1">{userName}</p>
-        <p className="text-md text-gray-500">{viewCount} views • {uploadAt}</p>
+        <h4 className="text-md text-gray-600 mt-1">{userName}</h4>
+        <h4 className="text-md text-gray-500">{viewCount} views • {uploadAt}</h4>
       </div>
     </Link>
   );

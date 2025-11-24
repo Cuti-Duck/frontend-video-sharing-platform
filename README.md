@@ -1,66 +1,159 @@
-1. Cấu trúc thư mục
-   src/
-   ├── app/ # App Router: pages & layouts
-   ├── components/ # Shared components
-   ├── hooks/ # Custom hooks
-   ├── lib/ # Helper, API clients
-   ├── types/ # TypeScript types
-   ├── styles/ # CSS/SCSS or Tailwind config
-   └── utils/ # Utility functions
+# Frontend Video Sharing Platform
 
-2. Quy tắc giao diện (UI)
+Nền tảng chia sẻ video hiện đại được xây dựng với Next.js 15, TypeScript và Tailwind CSS.
 
-   Sử dụng Tailwind CSS cho toàn bộ style.
+## 🚀 Tính năng chính
 
-   Component dùng chung đặt trong components/.
+- **Xem video**: Trình phát video với giao diện thân thiện
+- **Tìm kiếm**: Tìm kiếm video theo từ khóa
+- **Xác thực**: Đăng nhập/đăng ký người dùng
+- **Upload video**: Tải lên video mới
+- **Responsive**: Giao diện tối ưu cho mọi thiết bị
+- **Dark mode**: Giao diện tối hiện đại
 
-   Giữ component nhỏ, tái sử dụng, có kiểu rõ ràng.
+## 🛠 Công nghệ sử dụng
 
-   Ưu tiên dùng shadcn/ui và icon từ lucide-react để đồng bộ thiết kế.
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Icons**: Lucide React
+- **HTTP Client**: Axios
+- **Video Streaming**: Amazon IVS Web Broadcast
+- **Containerization**: Docker
 
-3. Quy tắc đặt tên
+## 📁 Cấu trúc thư mục
+
+```
+src/
+├── app/                    # App Router: pages & layouts
+│   ├── auth/              # Trang xác thực (login, register)
+│   ├── profile/[id]/      # Trang profile người dùng
+│   ├── search/            # Trang tìm kiếm
+│   ├── setting/           # Trang cài đặt
+│   ├── upload/            # Trang upload video
+│   ├── watch/[id]/        # Trang xem video
+│   ├── layout.tsx         # Layout chính
+│   └── page.tsx           # Trang chủ
+├── components/            # Shared components
+│   ├── Header.tsx         # Header navigation
+│   ├── SideBar.tsx        # Sidebar navigation
+│   ├── VideoCard.tsx      # Card hiển thị video
+│   ├── VideoPlayer.tsx    # Trình phát video
+│   └── ...
+├── context/               # React Context
+│   └── SidebarContext.tsx # Context quản lý sidebar
+├── hooks/                 # Custom hooks
+├── lib/                   # Helper functions & API clients
+│   ├── axiosClient.ts     # Axios configuration
+│   ├── mockData.ts        # Mock data cho development
+│   └── videoApi.ts        # Video API functions
+├── types/                 # TypeScript type definitions
+│   ├── video.d.ts         # Video types
+│   ├── user.d.ts          # User types
+│   └── ...
+├── styles/                # CSS/SCSS files
+└── utils/                 # Utility functions
+    └── cn.ts              # Class name utilities
+```
+
+## 🎨 Quy tắc thiết kế
+
+### UI Guidelines
+- Sử dụng **Tailwind CSS** cho toàn bộ styling
+- Component dùng chung đặt trong `components/`
+- Giữ component nhỏ, tái sử dụng, có type rõ ràng
+- Ưu tiên dùng **shadcn/ui** và icon từ **lucide-react**
+
+### Naming Conventions
 
 | Loại            | Quy tắc                   | Ví dụ                 |
-| --------------- | ------------------------- | --------------------- |
+|-----------------|---------------------------|-----------------------|
 | Component       | PascalCase                | `VideoCard.tsx`       |
 | Hook            | camelCase + tiền tố `use` | `useFetchData.ts`     |
 | Thư mục         | kebab-case                | `video-list/`         |
 | Biến môi trường | CHỮ HOA + GẠCH DƯỚI       | `NEXT_PUBLIC_API_URL` |
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🚀 Cài đặt và chạy
 
-## Getting Started
+### Prerequisites
+- Node.js 20+
+- npm/yarn/pnpm
 
-First, run the development server:
+### Development
 
 ```bash
+# Clone repository
+git clone <repository-url>
+cd frontend-video-sharing-platform
+
+# Cài đặt dependencies
+npm install
+
+# Chạy development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3000](http://localhost:3000) để xem ứng dụng.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Build ứng dụng
+npm run build
 
-## Learn More
+# Chạy production server
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Docker
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Build Docker image
+docker build -t video-sharing-platform .
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Chạy container
+docker run -p 3000:3000 video-sharing-platform
+```
 
-## Deploy on Vercel
+## 📱 Trang và tính năng
 
+### Trang chủ (`/`)
+- Hiển thị danh sách video trending
+- Grid layout responsive
+- Video cards với thumbnail, title, author
 
+### Xem video (`/watch/[id]`)
+- Video player với controls
+- Thông tin video và channel
+- Danh sách video liên quan
+- Like/Subscribe buttons
+
+### Xác thực (`/auth`)
+- **Login** (`/auth/login`): Đăng nhập với email/password
+- **Register** (`/auth/register`): Đăng ký tài khoản mới
+
+### Upload (`/upload`)
+- Upload video mới (đang phát triển)
+
+### Profile (`/profile/[id]`)
+- Thông tin channel
+- Danh sách video của channel
+
+## 🔧 API và Data
+
+### Mock Data
+Hiện tại sử dụng mock data trong `src/lib/mockData.ts`:
+- `mockVideos`: Danh sách video mẫu
+- `mockUser`: Danh sách user mẫu
+- Helper functions: `getVideoById`, `getUserById`, `getRelatedVideos`
+
+### API Integration
+- Axios client được cấu hình trong `src/lib/axiosClient.ts`
+- Video API functions trong `src/lib/videoApi.ts`
+
+## 🏗 Kiến trúc hệ thống
+
+```mermaid
 flowchart TB
   subgraph UserSide
     U[User Browser]
@@ -125,3 +218,47 @@ flowchart TB
   Lambda --> CW
   MediaConvert --> CW
   S3 --> CF
+```
+
+## 🔮 Roadmap
+
+### Phase 1 (Hiện tại)
+- ✅ Giao diện cơ bản
+- ✅ Video player
+- ✅ Authentication UI
+- ✅ Responsive design
+
+### Phase 2 (Sắp tới)
+- 🔄 Backend API integration
+- 🔄 Real authentication
+- 🔄 Video upload functionality
+- 🔄 User profiles
+
+### Phase 3 (Tương lai)
+- 📋 Comments system
+- 📋 Subscriptions
+- 📋 Notifications
+- 📋 Live streaming
+- 📋 Analytics dashboard
+
+## 🤝 Đóng góp
+
+1. Fork repository
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Tạo Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📞 Liên hệ
+
+- **Email**: contact@videoshare.com
+- **GitHub**: [Repository Link]
+- **Demo**: [Live Demo Link]
+
+---
+
+**Built with ❤️ using Next.js 15 and TypeScript**

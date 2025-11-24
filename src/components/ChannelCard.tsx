@@ -16,8 +16,8 @@ export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCo
             </div>
             
             <div className="flex flex-col gap-2">
-                <div className="text-5xl font-bold">{name}</div>
-                <div className="text-xl text-gray-500">{subscribersCount} subscribers • {videoCount} videos</div>
+                <h1 className="text-5xl font-bold">{name}</h1>
+                <h4 className="text-xl">{subscribersCount} subscribers • {videoCount} videos</h4>
                 <div className="w-[20%]"><SubcribeButton userId={userId}/></div>
             </div>
         </div>

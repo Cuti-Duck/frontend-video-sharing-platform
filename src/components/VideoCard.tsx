@@ -30,11 +30,11 @@ export function VideoCard({ videoId, thumbnailUrl, avatarUrl, title, userName, v
             alt={userName} 
             className="w-full aspect-square object-cover rounded-full"
           />
-        </div>
+        </div>  
         <div>
-          <h3 className="font-medium line-clamp-1">{title}</h3>
-          <p className="text-sm text-gray-600 mt-1">{userName}</p>
-          <p className="text-sm text-gray-500">{viewCount} views</p>
+          <h3 className="text-md font-bold line-clamp-1">{title}</h3>
+          <h4 className="text-md mt-1">{userName}</h4>
+          <h4 className="text-md">{viewCount} views</h4>
         </div>
       </div>
     </Link>
