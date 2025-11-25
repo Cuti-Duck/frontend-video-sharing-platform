@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function SmallChannelCard({userId, avatarUrl, name, subscribersCount }: { userId: string; avatarUrl: string; name: string; subscribersCount: number }) {
     return (
-        <Link href={`/profile/${userId}`}>
+        <Link href={`/channel/${userId}`}>
         <div className="inline-flex items-center gap-4 p-4 rounded-lg shadow transition-shadow cursor-pointer">
             <div className="w-15  flex-shrink-0">
                 <img src={avatarUrl} alt={name} className="w-full aspect-square object-cover rounded-full"/>

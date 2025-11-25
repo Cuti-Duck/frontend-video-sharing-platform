@@ -36,7 +36,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Đăng nhập">
+    <Modal isOpen={isOpen} onClose={onClose} title="Login">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
@@ -50,7 +50,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
         </div>
         
         <div>
-          <label className="block text-sm font-medium mb-1">Mật khẩu</label>
+          <label className="block text-sm font-medium mb-1">Password</label>
           <input
             type="password"
             value={password}
@@ -71,7 +71,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
       
       <div className="mt-4 text-center text-sm">
         <span className="text-gray-600 dark:text-gray-400">Chưa có tài khoản? </span>
-        <button onClick={onSwitchToRegister} className="text-white hover:underline">Đăng ký</button>
+        <button onClick={onSwitchToRegister} className="text-white hover:underline">Register</button>
       </div>
     </Modal>
   );

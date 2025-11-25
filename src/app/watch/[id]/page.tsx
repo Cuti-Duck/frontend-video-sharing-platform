@@ -3,7 +3,7 @@ import { SmallVideoCard } from "@/components/SmallVideoCard";
 import { getVideoById, getRelatedVideos, getUserById } from "@/lib/mockData";
 import { notFound } from "next/navigation";
 import { SmallChannelCard } from "@/components/SmallChannelCard";
-import { SubcribeButton } from "@/components/SubcribeButton";
+import { CustomButton } from "@/components/CustomButton";
 import { LikeButton } from "@/components/LikeButton";
 import { DescriptionCard } from "@/components/DescriptionCard";
 
@@ -40,7 +40,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
                 name={user?.name || "Unknown"}
                 subscribersCount={user?.subscribersCount || 0}
                 />
-              <SubcribeButton userId={user?.userId || ""}/>
+              <CustomButton content="Subcribe" userId={user?.userId || ""}/>
             </div>
             <div className="flex items-center">
               <LikeButton videoId={video.videoId} likeCount={video.likeCount} />

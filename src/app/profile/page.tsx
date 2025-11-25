@@ -1,20 +1,24 @@
 'use client'
 
-import { ChannelCard } from "@/components/ChannelCard";
+import { ProfileCard } from "@/components/ProfileCard";
 import TabMenu from "@/components/TabMenu";
 import { useAuth } from "@/context/AuthContext";
 import { notFound } from "next/navigation";
 
 export default function ProfilePage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();  
 
-  if (!isAuthenticated || !user) {
-    notFound();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if(!user){
+    return notFound();
   }
 
   return (
     <div className="flex flex-col items-right gap-6 p-6">
-        <ChannelCard userId={user.userId} 
+        <ProfileCard userId={user.userId} 
                     avatarUrl={user.avatarUrl} 
                     name={user.name} 
                     subscribersCount= {0}

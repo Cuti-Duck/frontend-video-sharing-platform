@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         gender: response.data.data.gender,
         birthDate: response.data.data.birthDate,
         phoneNumber: response.data.data.phoneNumber,
-        avatarUrl: response.data.data.avatarUrl,
+        avatarUrl: response.data.data.avatarUrl || `https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg`,
         channelId: response.data.data.channelId,
         createdAt: response.data.data.createdAt,
       })

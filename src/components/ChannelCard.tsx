@@ -1,4 +1,5 @@
-import { SubcribeButton } from "./SubcribeButton";
+import { CustomButton } from "./CustomButton";
+
 
 interface ChannelCardProps {
     userId: string;
@@ -18,7 +19,7 @@ export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCo
             <div className="flex flex-col gap-2">
                 <h1 className="text-5xl font-bold">{name}</h1>
                 <h4 className="text-xl">{subscribersCount} subscribers • {videoCount} videos</h4>
-                <div className="w-[20%]"><SubcribeButton userId={userId}/></div>
+                <div className="w-[20%]"><CustomButton content="Subcribe" userId={userId}/></div>
             </div>
         </div>
     );

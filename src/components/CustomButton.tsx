@@ -1,11 +1,10 @@
-import { Bell } from "lucide-react";
-
-interface SubcribeButtonProps {
-    userId: string;
+interface CustomButtonProps {
+  content: string;
+  userId: string;
   onClick?: () => void;
 }
 
-export function SubcribeButton({userId, onClick }: SubcribeButtonProps) {
+export function CustomButton({content, userId, onClick }: CustomButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -14,7 +13,7 @@ export function SubcribeButton({userId, onClick }: SubcribeButtonProps) {
         hover:bg-gray-200 transition-colors duration-200
         focus:outline-none focus:ring-2 focus:ring-gray-300
       "> 
-        <p className="font-bold text-black">Subscribe</p>
+        <p className="font-bold text-black">{content}</p>
     </button>
   );
 }
