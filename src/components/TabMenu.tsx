@@ -15,7 +15,7 @@ export default function TabMenu({userId, channelId}: {userId: string, channelId:
             setLoading(true)
             try{
                 console.log("getting video")
-                const response = await VideoApi.getVideoByChannelId(channelId)
+                const response = await VideoApi.GetVideoByChannelId(channelId)
                 setVideos(response.data)
 
                 console.log("success",response)
@@ -44,6 +44,7 @@ export default function TabMenu({userId, channelId}: {userId: string, channelId:
                     {videos.map((video) => (
                         <VideoCard
                             videoId={video.videoId}
+                            userId={userId}
                             thumbnailUrl={video.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
                             title={video.title}
                             userName={""}

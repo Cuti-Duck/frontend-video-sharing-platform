@@ -1,8 +1,14 @@
-import { Play } from "lucide-react";
+'use client'
+import { useAuth } from "@/context/AuthContext";
+import VideoApi from "@/lib/videoApi";
+import { Menu, Play } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import ThumbnailModal from "./ThumbnailModal";
 
 interface VideoCardProps {
   videoId: string;
+  userId: string;
   thumbnailUrl:string;
   avatarUrl: string;
   title: string;
@@ -10,19 +16,64 @@ interface VideoCardProps {
   viewCount: number;
 }
 
-export function VideoCard({ videoId, thumbnailUrl, avatarUrl, title, userName, viewCount }: VideoCardProps) {
+export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, userName, viewCount }: VideoCardProps) {
+  const {user, isLoading} = useAuth()
+  const [showSettingVideo, setShowSettingVideo] = useState(false)
+  const [showThumbnailModal, setShowThumbnailModal] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
+        setShowSettingVideo(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // const handleChangeThumnail = async (e: React.FormEvent) => {
+  //   try{
+  //     console.log()
+  //   }catch(error){
+  //     console.log(error)
+  //   }finally{
+  //     setShowSettingVideo(false)
+  //   }
+  // }  
+
+  const handleDelete = async (e: React.FormEvent) => {
+    const confirmed = window.confirm(`Are you sure you want to delete this video? ${title}`);
+    if (!confirmed) return;
+
+    try{
+      console.log("data deleting")
+      const response = VideoApi.DeleteVideo(videoId)
+      console.log(response)
+
+      window.location.reload()
+    }catch(error){
+      console.error('Error during login:', error);
+    }finally{
+      setShowSettingVideo(false)
+    }
+  }
+
   return (
-    <Link href={`/watch/${videoId}`} className="group cursor-pointer block">
-      <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
-        <img 
-          src={thumbnailUrl}
-          alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-        />
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Play className="w-12 h-12 text-white" />
-        </div>
-      </div>
+    <div className="group cursor-pointer block">
+      <Link href={`/watch/${videoId}`}>
+          <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+            <img 
+              src={thumbnailUrl}
+              alt={title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            />
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Play className="w-12 h-12 text-white" />
+            </div>
+          </div>
+      </Link>
       <div className="flex flex-row gap-2 mt-3">
         {avatarUrl && (
           <div className="w-[10%]">
@@ -38,7 +89,25 @@ export function VideoCard({ videoId, thumbnailUrl, avatarUrl, title, userName, v
           <h4 className="text-md mt-1">{userName}</h4>
           <h4 className="text-md">{viewCount} views</h4>
         </div>
+        {(user?.userId === userId) && 
+        (
+          <div className="relative ml-auto">
+            <Menu onClick={()=>setShowSettingVideo(true)} size={20}/>
+              {showSettingVideo && (
+                <div className="absolute right-0 mt-2 bg-[#2f2f2f] shadow-lg rounded-md p-2 z-50" ref={cardRef}>
+                  <button onClick={()=>{setShowThumbnailModal(true)}} className="block px-4 py-2 text-left hover:text-[#838383] w-full whitespace-nowrap">
+                    Edit Thumbnail
+                  </button>
+                  <button onClick={handleDelete} className="block px-4 py-2 text-left hover:text-[#838383] w-full whitespace-nowrap">
+                    Delete
+                  </button>
+                </div>
+              )}
+          </div>
+        )}
       </div>
-    </Link>
+
+      <ThumbnailModal isOpen={showThumbnailModal} onClose={() => setShowThumbnailModal(false)} videoId={videoId} />
+    </div>
   );
 }

@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import UserApi from "@/lib/userApi";
 
-interface ImageModalProps {
+interface AvatarModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function ImageModal({isOpen, onClose}: ImageModalProps) {
+export default function AvatarModal({isOpen, onClose}: AvatarModalProps) {
     const [image, setImage] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 

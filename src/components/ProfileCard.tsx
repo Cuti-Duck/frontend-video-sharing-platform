@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CustomButton } from "./CustomButton";
-import ImageModal from "./ImageModal";
+import AvatarModal from "./AvatarModal";
 import UpdateProfileModal from "./UpdateProfileModal";
 
 interface ChannelCardProps {
@@ -34,7 +34,7 @@ export function ProfileCard( {userId, avatarUrl, name, gender, birthDate, phoneN
                     </div>
                 </div>
             </div>
-            <ImageModal isOpen={showImageModal} onClose={()=> {setShowImageModal(false)}}/>
+            <AvatarModal isOpen={showImageModal} onClose={()=> {setShowImageModal(false)}}/>
             <UpdateProfileModal isOpen={showUpdateProfileModal} onClose={()=>{setShowUpdateProfileModal(false)}}
                                 name={name} gender={gender} birthDate={birthDate} phoneNumber={phoneNumber}/> 
                                 

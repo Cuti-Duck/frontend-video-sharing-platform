@@ -30,9 +30,8 @@ axiosClient.interceptors.response.use(
     console.error("API Error:", error);
 
     if (error.response?.status === 401) {
-      // Token hết hạn → logout
+      // Token hết hạn → xóa token, để AuthContext tự xử lý
       localStorage.removeItem("accessToken");
-      window.location.href = "/login";
     }
 
     return Promise.reject(error);

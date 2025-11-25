@@ -9,6 +9,7 @@ export default function Home() {
         {mockVideos.map((video) => (
           <VideoCard 
             videoId={video.videoId}
+            userId={video.userId}
             thumbnailUrl={video.thumbnailUrl}
             title={video.title}
             userName={getUserById(video.userId)?.name || "Unknown"}

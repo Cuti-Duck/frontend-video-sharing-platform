@@ -43,6 +43,8 @@ export default function UploadVideoModal({isOpen, onClose, channelId}: UploadVid
             console.log("video is sending")
             const response = await VideoApi.UploadVideo(url, video);
             console.log(response, "success");
+
+            window.location.reload()
         }catch (error){
             console.log(error)
         }finally{
