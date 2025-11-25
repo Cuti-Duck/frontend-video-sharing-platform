@@ -1,3 +1,6 @@
+'use client'
+import { useEffect, useRef } from "react";
+
 interface VideoPlayerProps {
   videoUrl: string;
   thumbnailUrl: string;
@@ -5,10 +8,23 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Dừng video khi component unmount
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
   return (
     <div>
       <div className="aspect-video bg-black rounded-lg overflow-hidden">
         <video 
+          ref={videoRef}
           className="w-full h-full"
           controls
           autoPlay
