@@ -31,17 +31,7 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // const handleChangeThumnail = async (e: React.FormEvent) => {
-  //   try{
-  //     console.log()
-  //   }catch(error){
-  //     console.log(error)
-  //   }finally{
-  //     setShowSettingVideo(false)
-  //   }
-  // }  
+  }, []); 
 
   const handleDelete = async (e: React.FormEvent) => {
     const confirmed = window.confirm(`Are you sure you want to delete this video? ${title}`);
