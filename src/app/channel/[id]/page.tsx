@@ -27,7 +27,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
       
       {/* TAB HEADER */}
-        <TabMenu userId={user.userId}/>
+        <TabMenu userId={user.userId} channelId={""}/>
     </div>
   );
 }
