@@ -24,13 +24,15 @@ export function VideoCard({ videoId, thumbnailUrl, avatarUrl, title, userName, v
         </div>
       </div>
       <div className="flex flex-row gap-2 mt-3">
-        <div className="w-[10%]">
+        {avatarUrl && (
+          <div className="w-[10%]">
           <img 
             src={avatarUrl} 
             alt={userName} 
             className="w-full aspect-square object-cover rounded-full"
           />
-        </div>  
+        </div>)}
+          
         <div>
           <h3 className="text-md font-bold line-clamp-1">{title}</h3>
           <h4 className="text-md mt-1">{userName}</h4>

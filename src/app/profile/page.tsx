@@ -30,7 +30,7 @@ export default function ProfilePage() {
 
       
       {/* TAB HEADER */}
-        <TabMenu userId={user.userId}/>
+        <TabMenu userId={user.userId} channelId={user.channelId}/>
     </div>
   );
 }
