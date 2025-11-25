@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { notFound } from "next/navigation";
 
 export default function ProfilePage() {
-  const { user, isAuthenticated, isLoading } = useAuth();  
+  const { user, isLoading } = useAuth();  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -20,7 +20,10 @@ export default function ProfilePage() {
     <div className="flex flex-col items-right gap-6 p-6">
         <ProfileCard userId={user.userId} 
                     avatarUrl={user.avatarUrl} 
-                    name={user.name} 
+                    name={user.name}
+                    gender={user.gender}
+                    birthDate={user.birthDate}
+                    phoneNumber={user.phoneNumber} 
                     subscribersCount= {0}
                     videoCount={0} 
         />

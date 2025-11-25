@@ -22,3 +22,10 @@ export interface UserResponse {
     channelId: string;
     createdAt: string;
 }
+
+export interface UserProfile {
+    name: string;
+    gender: string;
+    birthDate: string;
+    phoneNumber: string;
+}

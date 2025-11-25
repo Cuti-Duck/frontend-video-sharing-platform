@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { CustomButton } from "./CustomButton";
 import ImageModal from "./ImageModal";
+import UpdateProfileModal from "./UpdateProfileModal";
 
 interface ChannelCardProps {
     userId: string;
     avatarUrl: string;
     name: string;
+    gender?: string;
+    birthDate?: string;
+    phoneNumber?: string;
     subscribersCount: number;
     videoCount: number;
 }
 
-export function ProfileCard( {userId, avatarUrl, name, subscribersCount, videoCount}: ChannelCardProps) {
+export function ProfileCard( {userId, avatarUrl, name, gender, birthDate, phoneNumber, subscribersCount, videoCount}: ChannelCardProps) {
     const [showImageModal,setShowImageModal] = useState(false)
+    const [showUpdateProfileModal,setShowUpdateProfileModal] = useState(false)
 
     return (
         <div>
@@ -24,13 +29,15 @@ export function ProfileCard( {userId, avatarUrl, name, subscribersCount, videoCo
                     <h1 className="text-5xl font-bold">{name}</h1>
                     <h4 className="text-xl">{subscribersCount} subscribers • {videoCount} videos</h4>
                     <div className="flex flex-row items-center gap-3">
-                        <CustomButton content="Update Profile" userId={userId} />
+                        <CustomButton content="Update Profile" userId={userId} onClick={()=>{setShowUpdateProfileModal(true)}}/>
                         <CustomButton content="Upload Avatar" userId={userId} onClick={()=>{setShowImageModal(true)}}/>
                     </div>
                 </div>
             </div>
             <ImageModal isOpen={showImageModal} onClose={()=> {setShowImageModal(false)}}/>
-
+            <UpdateProfileModal isOpen={showUpdateProfileModal} onClose={()=>{setShowUpdateProfileModal(false)}}
+                                name={name} gender={gender} birthDate={birthDate} phoneNumber={phoneNumber}/> 
+                                
         </div>
         
     );
