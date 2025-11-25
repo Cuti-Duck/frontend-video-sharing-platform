@@ -6,6 +6,7 @@ import { LikeButton } from "@/components/LikeButton";
 import { DescriptionCard } from "@/components/DescriptionCard";
 import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
+import { VideoItems } from "@/types/video";
 
 interface WatchPageProps {
   params: { id: string };
@@ -15,6 +16,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const { id } = await params;
   const video = await VideoApi.GetVideoById(id)
   const user = await UserApi.GetUserById(video.data.userId)
+  const relatedVideos = await VideoApi.GetVideos()
 
   const videoUrl = `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${video.data.key}`
 
@@ -22,7 +24,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
 
   return (
     <div className="">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-1">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Main Video Section */}
         <div className="lg:col-span-3">
           
@@ -61,16 +63,18 @@ export default async function WatchPage({ params }: WatchPageProps) {
         {/* Related Videos Sidebar */}
         <div className="lg:col-span-1">
           
-          {/* {getRelatedVideos(video.videoId).map((videos) => (
+          {relatedVideos.data
+            .filter((v: VideoItems) => v.videoId !== video.data.videoId)
+            .map((v: VideoItems) => (
               <SmallVideoCard 
-                key={videos.videoId}
-                videoId={videos.videoId}
-                thumbnailUrl={videos.thumbnailUrl}
-                title={videos.title}
-                userName={getUserById(videos.userId)?.name || "Unknown"}
-                viewCount={video.viewCount}
-                uploadAt={video.createdAt} />
-          ))} */}
+                key={v.videoId}
+                videoId={v.videoId}
+                thumbnailUrl={v.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
+                title={v.title}
+                userName={"Unknown"}
+                viewCount={v.viewCount}
+                uploadAt={v.createdAt} />
+          ))}
         </div>
       </div>
     </div>
