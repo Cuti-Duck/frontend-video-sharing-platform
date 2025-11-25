@@ -1,6 +1,24 @@
+import { VideoInfo, VideoResponse } from "@/types/video";
 import axiosClient from "./axiosClient";
+import axios from "axios";
 
 const VideoApi = {
     GetVideos: async () => axiosClient.get("/videos/all"),
     GetVideoById: async (id: string) => axiosClient.get(`/videos/${id}`),
+    PostVideo: async (data: VideoInfo) => axiosClient.post<VideoResponse>("/videos/create",data),
+    UploadVideo: async (uploadUrl: string, file: File) => {
+        return axios.put(uploadUrl, file, {
+                headers: {
+                    'Content-Type': 'video/mp4',
+                },
+                onUploadProgress: (progressEvent) => {
+                const percent = Math.round(
+                (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
+                );
+                console.log(`Upload progress: ${percent}%`);
+            }})
+    },
+    getVideoByChannelId: async (channelId:string) => axiosClient.get(`/videos/channel/${channelId}`),
 }
+
+export default VideoApi;

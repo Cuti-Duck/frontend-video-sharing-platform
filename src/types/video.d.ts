@@ -16,3 +16,14 @@ export interface Video {
   likeCount: number;
   viewCount: number;
 }
+
+export interface VideoInfo {
+  channelId: string;
+  title: string;
+  description: string;
+}
+
+export interface VideoResponse {
+  videoId: string;
+  uploadUrl: string;
+}

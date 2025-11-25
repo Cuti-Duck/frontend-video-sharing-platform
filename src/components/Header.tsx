@@ -8,12 +8,14 @@ import { useAuth } from "@/context/AuthContext";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { DownDropMenu } from "./DownDropMenu";
+import UploadVideoModal from "./UploadVideoModal";
 
 export function Header() {
   const { toggleSidebar } = useSidebar();
   const { user, isAuthenticated, logout, isLoading } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showUpdateVideo, setShowUpdateVideo] = useState(false);
   
   console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
   return (
@@ -67,30 +69,23 @@ export function Header() {
 
         {/* Các nút bên phải */}
         <div className="flex items-center space-x-4 flex-shrink-0">
-          <Link href="/upload" className="flex items-center space-x-1 text-white-800 hover:text-red-600">
-            <Upload className="w-5 h-5" />
-            <span>Upload</span>
-          </Link>
+          <button 
+              onClick={() => setShowUpdateVideo(true)}
+              className="flex items-center space-x-1 text-white-800 hover:text-[#838383]"
+            >
+              <Upload className="w-5 h-5" />
+              <span>UpLoad</span>
+            </button>
           {isLoading ? (
             <span className="text-white text-sm">Loading...</span>
           ) : isAuthenticated ? (
             <div className="flex items-center space-x-2">
-              {/* <Link href={`/profile/${user?.userId}`}>
-                <img src={user?.avatarUrl} alt="avatar" className="w-10 aspect-square object-cover rounded-full"/>
-              </Link>
-              <button 
-                onClick={logout}
-                className="flex items-center space-x-1 text-white-800 hover:text-red-600"
-              >
-                <User className="w-5 h-5" />
-                <span>Đăng xuất</span>
-              </button> */}
               <DownDropMenu userId={user?.userId} avatarUrl={user?.avatarUrl} name={user?.name} logout={logout} ></DownDropMenu>
             </div>
           ) : (
             <button 
               onClick={() => setShowLogin(true)}
-              className="flex items-center space-x-1 text-white-800 hover:text-red-600"
+              className="flex items-center space-x-1 text-white-800 hover:text-[#838383]"
             >
               <User className="w-5 h-5" />
               <span>Đăng nhập</span>
@@ -113,8 +108,14 @@ export function Header() {
           setShowRegister(false);
           setShowLogin(true);
         }}
-      
       />
+      {user && 
+      <UploadVideoModal
+        isOpen={showUpdateVideo}
+        onClose={()=> setShowUpdateVideo(false)}
+        channelId={user.channelId}
+      />
+      }
     </header>
 
   );
