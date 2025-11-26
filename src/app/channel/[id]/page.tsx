@@ -1,7 +1,8 @@
+
 import { ChannelCard } from "@/components/ChannelCard";
 import TabMenu from "@/components/TabMenu";
-// import { getUserById, getVideoCountByUserId } from "@/lib/mockData";
 import UserApi from "@/lib/userApi";
+import VideoApi from "@/lib/videoApi";
 import { notFound } from "next/navigation";
 
 interface ProfilePageProps {
@@ -11,8 +12,12 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { id } = await params;
   const user = await UserApi.GetUserById(id);
+  const videos = (await VideoApi.GetVideoByChannelId(id)).data;
+  const videoCount = videos.length;
 
   console.log("user", user.data)
+  console.log("Videos", videos, "Length Video", videoCount)
+
   if (!user) {
     notFound();
   }
@@ -23,13 +28,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     avatarUrl={user.data.data.avatarUrl} 
                     name={user.data.data.name} 
                     subscribersCount={user.data.data.subscribersCount || 0} 
-                    videoCount={user.data.data.videoCount || 0}
-                    email={user.data.data.email} 
+                    videoCount={videoCount}
+                    email={user.data.data.email}
+                    channelId={user.data.data.channelId} 
         />
 
       
       {/* TAB HEADER */}
-        <TabMenu userId={id} channelId={user.data.data.channelId}/>
+        <TabMenu userId={id} videos={videos}/>
     </div>
   );
 }

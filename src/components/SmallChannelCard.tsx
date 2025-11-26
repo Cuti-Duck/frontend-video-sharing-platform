@@ -1,6 +1,9 @@
+'use client'
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
 export function SmallChannelCard({userId, avatarUrl, name, subscribersCount }: { userId: string; avatarUrl: string; name: string; subscribersCount: number }) {
+    const {user} = useAuth()
     return (
         <Link href={`/channel/${userId}`}>
         <div className="inline-flex items-center gap-4 p-4 rounded-lg shadow transition-shadow cursor-pointer">
