@@ -5,3 +5,10 @@ export interface Subscription {
   channelName?: string;
   channelAvatarUrl?: string;
 }
+
+export interface Subscriber {
+  avatarUrl: string;
+  channelId: string;
+  channelName: string;
+  subscribedAt: string;
+}

@@ -69,18 +69,17 @@ export function Header() {
 
         {/* Các nút bên phải */}
         <div className="flex items-center space-x-4 flex-shrink-0">
-          <button 
-              onClick={() => setShowUpdateVideo(true)}
-              className="flex items-center space-x-1 text-white-800 hover:text-[#838383]"
-            >
-              <Upload className="w-5 h-5" />
-              <span>UpLoad</span>
-            </button>
+          
           {isLoading ? (
             <span className="text-white text-sm">Loading...</span>
-          ) : isAuthenticated ? (
+          ) : user ? (
             <div className="flex items-center space-x-2">
-              <DownDropMenu userId={user?.userId} avatarUrl={user?.avatarUrl} name={user?.name} logout={logout} ></DownDropMenu>
+              <button onClick={() => setShowUpdateVideo(true)}
+                className="flex items-center space-x-1 text-white-800 hover:text-[#838383]">
+                  
+                <Upload className="w-5 h-5" />
+              </button>
+              <DownDropMenu user={user} logout={logout} ></DownDropMenu>
             </div>
           ) : (
             <button 

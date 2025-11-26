@@ -1,15 +1,39 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VideoCard } from "./VideoCard";
 import { VideoItems } from "@/types/video";
+import VideoApi from "@/lib/videoApi";
+import UserApi from "@/lib/userApi";
+import { UserResponse } from "@/types/user";
 
 interface TabMenuProps {
     userId: string;
-    videos: VideoItems[];
 }
 
-export default function TabMenu({userId, videos}: TabMenuProps) {
+export default function TabMenu({userId}: TabMenuProps) {
     const [Tab, setTab] = useState<'videos' | 'about'>('videos');
+    const [user, setUser] = useState<UserResponse>();
+    const [videos, setVideos] = useState<VideoItems[]>([]);
+    const [isGetting, setGetting] = useState(false);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                setGetting(true)
+                const response = await UserApi.GetUserById(userId);
+                setUser(response.data.data)
+                const resVideo = await VideoApi.GetVideoByChannelId(response.data.data.channelId)
+                setVideos(resVideo.data);
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+            }finally{
+                setGetting(false)
+            }
+        };
+        fetchVideos();
+    }, [userId])
+
+    if(isGetting) return <div>Loading...</div>
 
     return (
         <div>

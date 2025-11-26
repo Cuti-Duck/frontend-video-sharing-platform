@@ -1,9 +1,10 @@
-'use client'
-import { useAuth } from "@/context/AuthContext";
+import SubscriptionApi from "@/lib/subscriptionApi";
 import Link from "next/link";
 
-export function SmallChannelCard({userId, avatarUrl, name, subscribersCount }: { userId: string; avatarUrl: string; name: string; subscribersCount: number }) {
-    const {user} = useAuth()
+export async function SmallChannelCard({userId, avatarUrl, name, channelId }: { userId: string; avatarUrl: string; name: string; channelId: string }) {
+    const resSub = await SubscriptionApi.GetSubscriber(channelId)
+    const subscriberCount = resSub.data.totalCount;
+
     return (
         <Link href={`/channel/${userId}`}>
         <div className="inline-flex items-center gap-4 p-4 rounded-lg shadow transition-shadow cursor-pointer">
@@ -12,7 +13,7 @@ export function SmallChannelCard({userId, avatarUrl, name, subscribersCount }: {
             </div>
             <div className="flex flex-col min-w-0">
                 <p className="font-medium text-base sm:text-lg line-clamp-1">{name}</p>
-                <p className="text-sm text-gray-500">{subscribersCount} subcribers</p>
+                <p className="text-sm text-gray-500">{subscriberCount} subscribers</p>
             </div>
         </div>
         </Link>

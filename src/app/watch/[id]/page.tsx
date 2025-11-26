@@ -1,12 +1,12 @@
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { SmallVideoCard } from "@/components/SmallVideoCard";
 import { SmallChannelCard } from "@/components/SmallChannelCard";
-import { CustomButton } from "@/components/CustomButton";
 import { LikeButton } from "@/components/LikeButton";
 import { DescriptionCard } from "@/components/DescriptionCard";
 import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
 import { VideoItems } from "@/types/video";
+import { SubscribeButton } from "@/components/SubscribeButton";
 
 interface WatchPageProps {
   params: { id: string };
@@ -34,12 +34,13 @@ export default async function WatchPage({ params }: WatchPageProps) {
           <div className="flex justify-between px-3">
             <div className="flex items-center mt-4 mb-6">
               <SmallChannelCard
-                userId={user.data.data.userId || ""}
-                avatarUrl={user.data.data.avatarUrl || ""}   
-                name={user.data.data.name || "Unknown"}
-                subscribersCount={user.data.data.subscribersCount || 0}
+                userId={user.data.data.userId}
+                avatarUrl={user.data.data.avatarUrl}   
+                name={user.data.data.name}
+                channelId={user.data.data.channelId}
                 />
-              <CustomButton content="Subcribe" userId={user.data.data.userId || ""}/>
+              {/* <CustomButton content="Subcribe" userId={user.data.data.userId || ""}/> */}
+              <SubscribeButton channelId={user.data.data.channelId} />
             </div>
             <div className="flex items-center">
               <LikeButton videoId={video.data.videoId} likeCount={video.data.likeCount} />
