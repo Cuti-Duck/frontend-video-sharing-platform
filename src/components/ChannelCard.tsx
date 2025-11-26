@@ -1,3 +1,4 @@
+import { Mail } from "lucide-react";
 import { CustomButton } from "./CustomButton";
 
 
@@ -7,9 +8,10 @@ interface ChannelCardProps {
     name: string;
     subscribersCount: number;
     videoCount: number;
+    email: string;
 }
 
-export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCount}: ChannelCardProps) {
+export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCount, email}: ChannelCardProps) {
     return (
         <div className="flex items-center gap-6">
             <div className="w-[50%] sm:w-[40%] md:w-[30%] lg:w-[10%]">
@@ -18,6 +20,7 @@ export function ChannelCard( {userId, avatarUrl, name, subscribersCount, videoCo
             
             <div className="flex flex-col gap-2">
                 <h1 className="text-5xl font-bold">{name}</h1>
+                <h4 className="text-xl flex"><Mail size={20}/>: {email}</h4>
                 <h4 className="text-xl">{subscribersCount} subscribers • {videoCount} videos</h4>
                 <div className="w-[20%]"><CustomButton content="Subcribe" userId={userId}/></div>
             </div>

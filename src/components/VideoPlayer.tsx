@@ -2,14 +2,15 @@
 import { useEffect, useRef } from "react";
 
 interface VideoPlayerProps {
-  videoUrl: string;
+  videoKey: string;
   thumbnailUrl: string;
   title: string;
 }
 
-export function VideoPlayer({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) {
+export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
+  const videoUrl = `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${videoKey}`
+  console.log("video Url ",videoUrl)
   // Dừng video khi component unmount
   useEffect(() => {
     return () => {

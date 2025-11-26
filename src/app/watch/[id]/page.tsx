@@ -18,10 +18,6 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const user = await UserApi.GetUserById(video.data.userId)
   const relatedVideos = await VideoApi.GetVideos()
 
-  const videoUrl = `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${video.data.key}`
-
-  console.log("video", video.data, "user", user.data.data, "url", videoUrl)
-
   return (
     <div className="">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -29,7 +25,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
         <div className="lg:col-span-3">
           
             <VideoPlayer 
-            videoUrl={videoUrl}
+            videoKey={video.data.key}
             thumbnailUrl={video.data.thumbnailUrl}
             title={video.data.title}
           />
