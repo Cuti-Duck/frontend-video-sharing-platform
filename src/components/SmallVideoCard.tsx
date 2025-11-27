@@ -1,3 +1,4 @@
+'use client'
 import { Play } from "lucide-react";
 import Link from "next/link";
 
@@ -12,21 +13,22 @@ interface VideoCardProps {
 
 export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt }: VideoCardProps) {
   return (
-    <Link href={`/watch/${videoId}`} className="flex gap-2 mb-3 ">
-      <div className="w-[50%] bg-gray-100 rounded overflow-hidden flex-shrink-0">
-        <img 
-          src={thumbnailUrl}
-          alt={title}
-          className="block w-full h-auto aspect-video object-cover transition-transform"
-        />
-        <div className="bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+    <Link href={`/watch/${videoId}`} className="flex gap-1 mb-3 group">
+      <div className="relative w-1/2 max-h-[160px] aspect-video rounded overflow-hidden flex-shrink-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${thumbnailUrl})` }}>
+
+        </div>
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
           <Play className="w-6 h-6 text-white" />
         </div>
-      </div>  
-      <div className="flex-1">
-        <h3 className="font-bold line-clamp-2 text-lg">{title}</h3>
-        <h4 className="text-md text-gray-600 mt-1">{userName}</h4>
-        <h4 className="text-md text-gray-500">{viewCount} views • {uploadAt}</h4>
+      </div>
+
+      <div className="w-1/2 flex flex-col">
+        <h3 className="font-semibold text-sm line-clamp-2">{title}</h3>
+        <h4 className="text-xs text-gray-600 mt-1">{userName}</h4>
+        <h4 className="text-xs text-gray-500 truncate">{viewCount} views • {uploadAt}</h4>
       </div>
     </Link>
   );

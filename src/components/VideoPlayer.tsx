@@ -7,23 +7,27 @@ interface VideoPlayerProps {
   title: string;
 }
 
-const qualities = ["1080p", "720p"] as const;
+
 
 export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [quality, setQuality] = useState<"1080p" | "720p">("1080p");
+  const qualities = ["1080p", "720p"] as const;
   const videoUrl = videoKey ? `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${videoKey.replace(/_\d+p\.mp4$/, `_${quality}.mp4`)}` : null;
-  
-  
-  console.log("video Key ",videoKey)
+
   // Dừng video khi component unmount
   useEffect(() => {
     return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    };
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }}
+  }, []);
+  console.log("MOUNT");
+  useEffect(() => {
+    console.log("EFFECT RUN");
+
+    return () => console.log("UNMOUNT");
   }, []);
 
   return (
@@ -61,6 +65,5 @@ export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps)
         </select>
       </div>
     </div>
-    
-  );
+  )
 }

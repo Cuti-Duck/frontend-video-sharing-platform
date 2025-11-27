@@ -1,37 +1,17 @@
-'use client'
+
 import { VideoCard } from "@/components/VideoCard";
 import VideoApi from "@/lib/videoApi";
 import { VideoItems } from "@/types/video";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [videos, setVideos] = useState<VideoItems[]>([])
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-        const fetchVideos = async () => {
-            setLoading(true)
-            try{
-                console.log("getting video")
-                const response = await VideoApi.GetVideos()
-                setVideos(response.data)
-
-                console.log("success",response)
-
-            }catch(error){
-                console.error("Error fetching videos:", error);
-            }finally{
-                setLoading(false)
-            }
-        }
-        fetchVideos();
-    },[])
+export default async function Home() {
+  const videos = await VideoApi.GetVideos();
 
   return (
     <div className="">
-      {isLoading && <p>Loading...</p>}
+      {/* {isLoading && <p>Loading...</p>} */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-        {videos.map((video) => (
+        {videos.data.map((video: VideoItems) => (
           <VideoCard
               videoId={video.videoId}
               userId={video.userId}

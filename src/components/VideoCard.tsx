@@ -2,9 +2,10 @@
 import { useAuth } from "@/context/AuthContext";
 import VideoApi from "@/lib/videoApi";
 import { Menu, Play } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ThumbnailModal from "./ThumbnailModal";
+import { useRouter } from "next/navigation";
+
 
 interface VideoCardProps {
   videoId: string;
@@ -21,6 +22,11 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
   const [showSettingVideo, setShowSettingVideo] = useState(false)
   const [showThumbnailModal, setShowThumbnailModal] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null);
+  const router = useRouter()
+
+  const handlethumbnailClick = () => {
+    router.push(`/watch/${videoId}`)
+  }
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -52,7 +58,7 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
 
   return (
     <div className="group cursor-pointer block">
-      <Link href={`/watch/${videoId}`}>
+      <div onClick={() => handlethumbnailClick()}>
           <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
             <img 
               src={thumbnailUrl}
@@ -63,7 +69,7 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
               <Play className="w-12 h-12 text-white" />
             </div>
           </div>
-      </Link>
+      </div>
       <div className="flex flex-row gap-2 mt-3">
         {avatarUrl && (
           <div className="w-[10%]">

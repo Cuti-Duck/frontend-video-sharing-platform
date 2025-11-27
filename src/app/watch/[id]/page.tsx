@@ -16,19 +16,22 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const { id } = await params;
   const video = await VideoApi.GetVideoById(id)
   const user = await UserApi.GetUserById(video.data.userId)
-  const relatedVideos = await VideoApi.GetVideos()
+  const videos = await VideoApi.GetVideos()
+  const relatedVideos = videos.data.filter((v: VideoItems) => v.videoId !== video.data.videoId)
 
   return (
     <div className="">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Main Video Section */}
         <div className="lg:col-span-3">
-          
+          <div>
             <VideoPlayer 
             videoKey={video.data.key}
             thumbnailUrl={video.data.thumbnailUrl}
             title={video.data.title}
           />
+          </div>
+          
         
           {/* Video Info */}
           <div className="flex justify-between px-3">
@@ -58,22 +61,19 @@ export default async function WatchPage({ params }: WatchPageProps) {
         </div>
         
         {/* Related Videos Sidebar */}
-        <div className="lg:col-span-1">
-          
-          {relatedVideos.data
-            .filter((v: VideoItems) => v.videoId !== video.data.videoId)
-            .map((v: VideoItems) => (
+        <div className="lg:col-span-1">  
+          {relatedVideos.map((v: VideoItems) => (
               <SmallVideoCard 
-                key={v.videoId}
                 videoId={v.videoId}
                 thumbnailUrl={v.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
                 title={v.title}
                 userName={"Unknown"}
                 viewCount={v.viewCount}
-                uploadAt={v.createdAt} />
+                uploadAt={v.createdAt}
+                key={v.videoId} />
           ))}
         </div>
       </div>
     </div>
-  );
+  )
 }
