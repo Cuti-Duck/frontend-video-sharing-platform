@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, Suspense } from "react";
 import Hls from "hls.js";
 import { Radio, Share2, Copy, Check } from "lucide-react";
+import { useLivestream } from "@/context/LiveStreamContext";
 
 function LivestreamPlayer() {
     const searchParams = useSearchParams();
@@ -16,6 +17,8 @@ function LivestreamPlayer() {
     const [isLive, setIsLive] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    const { setIsStreaming } = useLivestream();
 
     useEffect(() => {
         const video = videoRef.current;
@@ -60,15 +63,17 @@ function LivestreamPlayer() {
             hls.on(Hls.Events.MANIFEST_PARSED, () => {
                 console.log("HLS manifest loaded - Stream is live!");
                 setIsLive(true);
+                setIsStreaming(true);
                 setError(null);
                 video.play().catch(console.error);
             });
 
             hls.on(Hls.Events.ERROR, (event, data) => {
-                console.error("HLS Error:", data);
+                console.log("HLS Error - Type:", data.type, "Details:", data.details, "Fatal:", data.fatal);
 
                 if (!data.fatal) {
-                    if (data.details === "bufferStalledError") {
+                    // Fix: Dùng Hls.ErrorDetails thay vì string
+                    if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
                         console.log("Buffer stalled, waiting for more data...");
                         return;
                     }
@@ -79,6 +84,7 @@ function LivestreamPlayer() {
                     case Hls.ErrorTypes.NETWORK_ERROR:
                         setError("Stream chưa bắt đầu hoặc đã kết thúc. Đang thử kết nối lại...");
                         setIsLive(false);
+                        setIsStreaming(false);
                         setTimeout(() => {
                             hls.startLoad();
                         }, 3000);
@@ -111,8 +117,8 @@ function LivestreamPlayer() {
             });
         }
 
-        return cleanup;
-    }, [playbackUrl]);
+        return () => cleanup();
+    }, [playbackUrl, setIsStreaming]);
 
     const handleShareStream = async () => {
         const shareUrl = window.location.href;
@@ -224,7 +230,7 @@ function LivestreamPlayer() {
                     <div className="flex items-center gap-2">
                         <input
                             type="text"
-                            value={window.location.href}
+                            value={typeof window !== "undefined" ? window.location.href : ""}
                             readOnly
                             className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm truncate"
                         />

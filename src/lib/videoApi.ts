@@ -29,7 +29,8 @@ const VideoApi = {
 
     DeleteVideo: async (videoId: string) => axiosClient.delete(`/videos/${videoId}`),
     LikeVideo: (videoId: string) => axiosClient.post(`/videos/${videoId}/like`),
-    GetLikeStatus: (videoId: string) => axiosClient.get(`/videos/${videoId}/like/status`)
+    GetLikeStatus: (videoId: string) => axiosClient.get(`/videos/${videoId}/like/status`),
+    GetLikedVideos: () => axiosClient.get("/videos/liked")
 
 }
 

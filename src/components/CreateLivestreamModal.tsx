@@ -47,6 +47,15 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                 ingestServer: data.ingestServer,
                 playbackUrl: data.playbackUrl,
             });
+
+            localStorage.setItem("myLivestream", JSON.stringify({
+                playbackUrl: data.playbackUrl,
+                title: title.trim(),
+                description: description.trim(),
+            }));
+
+            window.dispatchEvent(new Event("livestreamCreated"));
+
             setStep("result");
         } catch (err) {
             console.error("Error creating livestream:", err);

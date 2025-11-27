@@ -9,10 +9,7 @@ const LivestreamApi = {
     CreateLivestream: (data?: CreateLivestreamData) =>
         axiosClient.post("/livestreams/create", data),
 
-    // Các API khác nếu có
-    GetLivestreams: () => axiosClient.get("/livestreams"),
-    GetLivestreamById: (id: string) => axiosClient.get(`/livestreams/${id}`),
-    EndLivestream: (id: string) => axiosClient.post(`/livestreams/${id}/end`),
+    GetMyLivestream: () => axiosClient.get("/livestreams/my-channel"),
 }
 
 export default LivestreamApi;
