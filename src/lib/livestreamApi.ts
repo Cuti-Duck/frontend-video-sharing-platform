@@ -1,7 +1,13 @@
 import axiosClient from "./axiosClient";
 
+interface CreateLivestreamData {
+    title: string;
+    description?: string;
+}
+
 const LivestreamApi = {
-    CreateLivestream: () => axiosClient.post("/livestreams/create"),
+    CreateLivestream: (data?: CreateLivestreamData) =>
+        axiosClient.post("/livestreams/create", data),
 
     // Các API khác nếu có
     GetLivestreams: () => axiosClient.get("/livestreams"),
