@@ -7,6 +7,7 @@ import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
 import { VideoItems } from "@/types/video";
 import { SubscribeButton } from "@/components/SubscribeButton";
+import LikeApi from "@/lib/videoLikeApi";
 
 interface WatchPageProps {
   params: { id: string };
@@ -18,7 +19,6 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const user = await UserApi.GetUserById(video.data.userId)
   const videos = await VideoApi.GetVideos()
   const relatedVideos = videos.data.filter((v: VideoItems) => v.videoId !== video.data.videoId)
-
   return (
     <div className="">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -46,7 +46,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
               <SubscribeButton channelId={user.data.data.channelId} />
             </div>
             <div className="flex items-center">
-              <LikeButton videoId={video.data.videoId} likeCount={video.data.likeCount} />
+              <LikeButton videoId={video.data.videoId} likeCount={video.data.likeCount}/>
             </div>
           </div>
             

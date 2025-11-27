@@ -1,6 +1,6 @@
 'use client'
 import { Play } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface VideoCardProps {
   videoId: string; 
@@ -12,8 +12,13 @@ interface VideoCardProps {
 }
 
 export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt }: VideoCardProps) {
+  const router = useRouter();
+  const handlethumbnailClick = () => {
+    router.push(`/watch/${videoId}`)
+  }
+
   return (
-    <Link href={`/watch/${videoId}`} className="flex gap-1 mb-3 group">
+    <div onClick={()=>handlethumbnailClick()} className="flex gap-1 mb-3 group">
       <div className="relative w-1/2 max-h-[160px] aspect-video rounded overflow-hidden flex-shrink-0">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -30,6 +35,6 @@ export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCou
         <h4 className="text-xs text-gray-600 mt-1">{userName}</h4>
         <h4 className="text-xs text-gray-500 truncate">{viewCount} views • {uploadAt}</h4>
       </div>
-    </Link>
+    </div>
   );
 }

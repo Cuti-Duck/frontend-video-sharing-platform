@@ -7,8 +7,6 @@ interface VideoPlayerProps {
   title: string;
 }
 
-
-
 export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [quality, setQuality] = useState<"1080p" | "720p">("1080p");
@@ -38,7 +36,7 @@ export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps)
           ref={videoRef}
           className="w-full h-full"
           controls
-          autoPlay
+          autoPlay = {process.env.NODE_ENV === "production"}
           poster={thumbnailUrl}
           preload="metadata"
         >
