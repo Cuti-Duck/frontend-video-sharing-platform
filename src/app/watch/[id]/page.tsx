@@ -7,7 +7,6 @@ import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
 import { VideoItems } from "@/types/video";
 import { SubscribeButton } from "@/components/SubscribeButton";
-import LikeApi from "@/lib/videoLikeApi";
 
 interface WatchPageProps {
   params: { id: string };

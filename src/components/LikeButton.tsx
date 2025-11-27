@@ -1,4 +1,5 @@
 'use client'
+import { useAuth } from "@/context/AuthContext";
 import LikeApi from "@/lib/videoLikeApi";
 import { ThumbsUp } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -6,10 +7,13 @@ import { useState, useEffect } from "react";
 export function LikeButton({ videoId, likeCount}: { videoId: string, likeCount: number}) {
     const [isLiked, setIsLiked] = useState(false);
     const [like, setLike] = useState(likeCount);
-    const [loading, setLoading] = useState(false);
+    const {isAuthenticated} = useAuth()
 
     useEffect(()=>{
         const fetchLikeStatus = async () => {
+            if(!isAuthenticated){
+                return
+            }
             try{
                 const response = await LikeApi.GetLikeVideo(videoId)
 
@@ -23,6 +27,10 @@ export function LikeButton({ videoId, likeCount}: { videoId: string, likeCount: 
     },[])
 
     const handleLike = async () => {
+        if(!isAuthenticated){
+            console.log("need login")
+            return
+        }
         try{
             const response = LikeApi.Like(videoId)
             console.log("click like",response)
