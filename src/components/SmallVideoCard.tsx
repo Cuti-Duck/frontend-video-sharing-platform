@@ -11,7 +11,8 @@ interface VideoCardProps {
   uploadAt: string;
 }
 
-export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt }: VideoCardProps) {
+export function SmallVideoCard({ videoId, thumbnailUrl, title, userName, viewCount, uploadAt}: VideoCardProps) {
+
   const router = useRouter();
   const handlethumbnailClick = () => {
     router.push(`/watch/${videoId}`)

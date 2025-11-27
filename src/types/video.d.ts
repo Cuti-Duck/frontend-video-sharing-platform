@@ -32,7 +32,8 @@ export interface VideoItems {
   viewCount: number;
   likeCount: number;
   createdAt: string; // ISO date
-
+  userName: string;
+  userAvatarUrl: string;
 }
 
 export interface VideoInfo {
