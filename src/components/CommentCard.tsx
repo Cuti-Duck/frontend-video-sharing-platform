@@ -15,7 +15,7 @@ export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchCom
     const [showAction, setShowAction] = useState<"menu"|"edit"|"reply"|"none">("none")
     const [editComment, setEditComment] = useState(comment.content)
     const [content,setContent] = useState(comment.content)
-    const [repliesCount,setRepliesConut] = useState(comment.replyCount)
+    const [repliesCount,setRepliesCount] = useState(comment.replyCount)
     const [newComment,setNewComment] = useState("")
     const [likeCount,setLikeCount] = useState(comment.likeCount)
     const [liked,setLiked] = useState(false)
@@ -92,6 +92,7 @@ export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchCom
             const response = await CommentApi.PostComment(comment.videoId, data)
             setNewComment("")
             setShowAction("none")
+            setRepliesCount(repliesCount+1)
             fetchCommentReplies()
             console.log("send comment", response)
         }catch(error){

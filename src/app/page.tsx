@@ -3,7 +3,7 @@ import VideoApi from "@/lib/videoApi";
 import { VideoItems } from "@/types/video";
 
 export default async function Home() {
-  const videos = await VideoApi.GetVideos();
+  const videos = await VideoApi.GetVideosTrending();
   console.log("videos",videos)
 
   return (

@@ -35,7 +35,10 @@ export default function RootLayout({
           <SidebarProvider>
             <Header />
             <div className="flex">
-              <SideBar />
+              <div>
+                <SideBar/>
+              </div>
+              
               <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
                 {children}
               </main>

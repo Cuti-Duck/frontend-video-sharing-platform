@@ -28,6 +28,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
         <div className="lg:col-span-3">
           <div>
             <VideoPlayer 
+            videoId={video.data.videoId}
             videoKey={video.data.key}
             thumbnailUrl={video.data.thumbnailUrl}
             title={video.data.title}

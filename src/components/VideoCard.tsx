@@ -1,7 +1,7 @@
 'use client'
 import { useAuth } from "@/context/AuthContext";
 import VideoApi from "@/lib/videoApi";
-import { Menu, Play } from "lucide-react";
+import { EllipsisVertical, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import ThumbnailModal from "./ThumbnailModal";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,18 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
   const handlethumbnailClick = () => {
     router.push(`/watch/${videoId}`)
   }
+
+  // useEffect(()=>{
+  //   const fetchVideo = async() => {
+  //     try{
+  //       const response = VideoApi.GetVideoById(videoId)
+  //       console.log("video fetch",response)
+
+  //     }catch(error){
+  //       console.log(error)
+  //     }
+  //   }
+  // }, [videoId])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -82,7 +94,7 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
         {(user?.userId === userId) && 
         (
           <div className="relative ml-auto">
-            <Menu onClick={()=>setShowSettingVideo(true)} size={20}/>
+            <EllipsisVertical onClick={()=>setShowSettingVideo(true)} size={20}/>
               {showSettingVideo && (
                 <div className="absolute right-0 mt-2 bg-[#2f2f2f] shadow-lg rounded-md p-2 z-50" ref={cardRef}>
                   <button onClick={()=>{setShowThumbnailModal(true)}} className="block px-4 py-2 text-left hover:text-[#838383] w-full whitespace-nowrap">

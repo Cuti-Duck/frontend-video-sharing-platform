@@ -9,6 +9,7 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { DownDropMenu } from "./DownDropMenu";
 import UploadVideoModal from "./UploadVideoModal";
+import SearchBar from "./SearchBar";
 
 export function Header() {
   const { toggleSidebar } = useSidebar();
@@ -57,14 +58,7 @@ export function Header() {
 
         {/* Thanh tìm kiếm ở giữa */}
         <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-md relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm video..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500"
-            />
-          </div>
+          <SearchBar/>
         </div>
 
         {/* Các nút bên phải */}
