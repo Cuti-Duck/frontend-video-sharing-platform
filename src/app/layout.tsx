@@ -39,7 +39,7 @@ export default function RootLayout({
                 <SideBar/>
               </div>
               
-              <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
+              <main className="flex-1 transition-all duration-300 p-3 overflow-y-auto">
                 {children}
               </main>
             </div>

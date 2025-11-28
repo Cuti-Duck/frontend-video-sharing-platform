@@ -8,6 +8,7 @@ import UserApi from "@/lib/userApi";
 import { VideoItems } from "@/types/video";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { CommentFrame } from "@/components/CommentFrame";
+import { VideoCard } from "@/components/VideoCard";
 
 interface WatchPageProps {
   params: { id: string };
@@ -23,9 +24,9 @@ export default async function WatchPage({ params }: WatchPageProps) {
 
   return (
     <div className="">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
         {/* Main Video Section */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-7">
           <div>
             <VideoPlayer 
             videoId={video.data.videoId}
@@ -68,16 +69,9 @@ export default async function WatchPage({ params }: WatchPageProps) {
         </div>
         
         {/* Related Videos Sidebar */}
-        <div className="lg:col-span-1">  
+        <div className="flex flex-col lg:col-span-3 gap-2">  
           {relatedVideos.map((v: VideoItems) => (
-              <SmallVideoCard 
-                videoId={v.videoId}
-                thumbnailUrl={v.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
-                title={v.title}
-                userName={v.userName}
-                viewCount={v.viewCount}
-                uploadAt={v.createdAt}
-                key={v.videoId} />
+              <VideoCard key={v.videoId} videoId={v.videoId} layout="horizontal" limit={true}/>
           ))}
         </div>
       </div>

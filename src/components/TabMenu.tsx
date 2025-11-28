@@ -45,16 +45,14 @@ export default function TabMenu({userId}: TabMenuProps) {
             {Tab === 'videos' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {/* Video content goes here */}
-                    {videos.map((video) => (
+                    {videos
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((video) => (
                         <VideoCard
-                            videoId={video.videoId}
-                            userId={userId}
-                            thumbnailUrl={video.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
-                            title={video.title}
-                            userName={""}
-                            avatarUrl={""}
-                            viewCount={video.viewCount}
                             key={video.videoId}
+                            videoId={video.videoId}
+                            layout="vertical"
+                            limit={false}
                         />
                     ))}
                 </div>

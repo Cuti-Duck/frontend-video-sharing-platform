@@ -1,5 +1,5 @@
 import { ChannelCard } from "@/components/ChannelCard";
-import { SmallVideoCard } from "@/components/SmallVideoCard";
+import { VideoCard } from "@/components/VideoCard";
 import SearchApi from "@/lib/searchApi";
 import { ChannelSearchItem } from "@/types/channel";
 import { VideoSearchItem } from "@/types/video";
@@ -33,17 +33,10 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
       {videos.length === 0 && channels.length === 0 ? (
         <p>Không có kết quả nào.</p>
       ) : (
-        <div>
+        <div className="flex flex-col gap-2">
             {/* Hiển thị video */}
             {videos.map((video: VideoSearchItem) => (
-              <SmallVideoCard 
-                key={video.videoId}
-                videoId={video.videoId} 
-                thumbnailUrl={video.thumbnailUrl} 
-                title={video.title} 
-                userName={video.channelName} 
-                viewCount={video.viewCount}
-                uploadAt={video.createdAt} />
+              <VideoCard key={video.videoId} videoId={video.videoId} layout="horizontal" limit={false}/>
             ))}
             {/* Hiển thị channel */}
             {channels.map((channel: ChannelSearchItem) => (
