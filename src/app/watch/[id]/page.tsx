@@ -1,5 +1,4 @@
 import { VideoPlayer } from "@/components/VideoPlayer";
-import { SmallVideoCard } from "@/components/SmallVideoCard";
 import { SmallChannelCard } from "@/components/SmallChannelCard";
 import { LikeButton } from "@/components/LikeButton";
 import { DescriptionCard } from "@/components/DescriptionCard";
