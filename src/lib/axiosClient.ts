@@ -17,6 +17,13 @@ axiosClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
+    // ===== LOG URL THỰC SỰ =====
+    // const fullUrl =
+    //   config.baseURL?.replace(/\/+$/, "") +
+    //   "/" +
+    //   config.url?.replace(/^\/+/, "");
+    // console.log("👉 REAL API CALL:", fullUrl);
+
     return config;
   },
   (error) => Promise.reject(error)

@@ -1,84 +1,53 @@
 'use client'
-
-import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import VideoApi from "@/lib/videoApi";
+import LikeApi from "@/lib/videoLikeApi";
 import { ThumbsUp } from "lucide-react";
+import { useState, useEffect } from "react";
 
-interface LikeButtonProps {
-    videoId: string;
-    likeCount: number;
-}
-
-export function LikeButton({ videoId, likeCount: initialLikeCount }: LikeButtonProps) {
-    const { isAuthenticated } = useAuth();
+export function LikeButton({ videoId, likeCount }: { videoId: string, likeCount: number }) {
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(initialLikeCount);
-    const [isLoading, setIsLoading] = useState(false);
+    const [like, setLike] = useState(likeCount);
+    const { isAuthenticated } = useAuth()
 
     useEffect(() => {
-        const checkLikeStatus = async () => {
-            if (!isAuthenticated || !videoId) return;
-
+        const fetchLikeStatus = async () => {
+            if (!isAuthenticated) return
             try {
-                const response = await VideoApi.GetLikeStatus(videoId);
-                setIsLiked(response.data?.isLiked || response.data === true);
+                const response = await LikeApi.GetLikeVideo(videoId)
+                setIsLiked(response.data.isLiked)
             } catch (error) {
-                console.error("Error checking like status:", error);
+                console.log(error)
             }
-        };
-
-        checkLikeStatus();
-    }, [videoId, isAuthenticated]);
+        }
+        fetchLikeStatus();
+    }, [])
 
     const handleLike = async () => {
         if (!isAuthenticated) {
-            alert("Vui lòng đăng nhập để like video!");
-            return;
+            console.log("need login")
+            return
         }
-
-        if (isLoading) return;
-
-        setIsLoading(true);
-
         try {
-            await VideoApi.LikeVideo(videoId);
-
-            if (isLiked) {
-                // Unlike
-                setLikeCount(prev => prev - 1);
-                setIsLiked(false);
-            } else {
-                // Like
-                setLikeCount(prev => prev + 1);
-                setIsLiked(true);
-            }
+            const response = LikeApi.Like(videoId)
+            console.log("click like", response)
+            setIsLiked(!isLiked)
+            setLike(isLiked ? like - 1 : like + 1)
         } catch (error) {
-            console.error("Error toggling like:", error);
-            alert("Có lỗi xảy ra. Vui lòng thử lại!");
-        } finally {
-            setIsLoading(false);
+            console.log("need login", error)
         }
-    };
+    }
 
     return (
-        <button
-            onClick={handleLike}
-            disabled={isLoading}
-            className={`
-                flex items-center gap-2 px-4 py-2 rounded-full transition-all
-                ${isLiked
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-700 text-white hover:bg-gray-600"
-                }
-                ${isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-            `}
-        >
-            <ThumbsUp
-                className="w-5 h-5"
-                fill={isLiked ? "currentColor" : "none"}
-            />
-            <span>{likeCount}</span>
-        </button>
-    );
-}
+        <div className="flex items-center gap-1">
+            <button onClick={handleLike} className="flex items-center gap-3 bg-[#D1D5DB]/20 text-white font-medium px-6 py-2 hover:bg-[#838383] rounded-full">
+
+                {(isLiked) ? (
+                    <ThumbsUp fill="white" className="w-full" />
+                ) : (
+                    <ThumbsUp className="w-full" />
+                )}
+                <p className="font-bold text-md">{like}</p>
+            </button>
+        </div>
+    )
+}   

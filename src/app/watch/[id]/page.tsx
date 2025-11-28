@@ -7,6 +7,7 @@ import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
 import { VideoItems } from "@/types/video";
 import { SubscribeButton } from "@/components/SubscribeButton";
+import { CommentFrame } from "@/components/CommentFrame";
 
 interface WatchPageProps {
   params: { id: string };
@@ -18,6 +19,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const user = await UserApi.GetUserById(video.data.userId)
   const videos = await VideoApi.GetVideos()
   const relatedVideos = videos.data.filter((v: VideoItems) => v.videoId !== video.data.videoId)
+  
 
   return (
     <div className="">
@@ -26,6 +28,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
         <div className="lg:col-span-3">
           <div>
             <VideoPlayer 
+            videoId={video.data.videoId}
             videoKey={video.data.key}
             thumbnailUrl={video.data.thumbnailUrl}
             title={video.data.title}
@@ -46,7 +49,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
               <SubscribeButton channelId={user.data.data.channelId} />
             </div>
             <div className="flex items-center">
-              <LikeButton videoId={video.data.videoId} likeCount={video.data.likeCount} />
+              <LikeButton videoId={video.data.videoId} likeCount={video.data.likeCount}/>
             </div>
           </div>
             
@@ -58,6 +61,10 @@ export default async function WatchPage({ params }: WatchPageProps) {
               description={video.data.description}
             />
           </div>
+          {/* Comment */}
+          <div>
+            <CommentFrame videoId={video.data.videoId}/>
+          </div>
         </div>
         
         {/* Related Videos Sidebar */}
@@ -67,7 +74,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
                 videoId={v.videoId}
                 thumbnailUrl={v.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
                 title={v.title}
-                userName={"Unknown"}
+                userName={v.userName}
                 viewCount={v.viewCount}
                 uploadAt={v.createdAt}
                 key={v.videoId} />

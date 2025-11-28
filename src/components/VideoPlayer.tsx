@@ -1,19 +1,57 @@
 'use client'
+import ViewApi from "@/lib/viewApi";
 import { useEffect, useRef, useState } from "react";
 
 interface VideoPlayerProps {
+  videoId: string
   videoKey: string;
   thumbnailUrl: string;
   title: string;
 }
 
-
-
-export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps) {
+export function VideoPlayer({videoId, videoKey, thumbnailUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [quality, setQuality] = useState<"1080p" | "720p">("1080p");
   const qualities = ["1080p", "720p"] as const;
   const videoUrl = videoKey ? `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${videoKey.replace(/_\d+p\.mp4$/, `_${quality}.mp4`)}` : null;
+  const [viewCounted, setViewCounted] = useState(false);
+
+  // 🔥 Check % xem và gọi API tăng view
+  useEffect(() => {
+  if (!videoRef.current) return;
+
+  const video = videoRef.current;
+  let watchedSeconds = 0;
+
+  const checkView = async () => {
+    if (viewCounted) return;
+
+    const duration = video.duration;
+    const current = video.currentTime;
+
+    if (!duration) return;
+    const percent = current / duration;
+    watchedSeconds += 1;
+    // console.log("⏱ Watched:", watchedSeconds, "sec", " | ", Math.round(percent * 100), "%");
+    // Điều kiện 1: xem tối thiểu 30%
+    const enoughPercent = percent >= 0.3;
+    // Điều kiện 2: xem tối thiểu 10 giây
+    const enoughTime = watchedSeconds >= 10;
+    if (enoughPercent && enoughTime) {
+      console.log("📈 Tăng view...");
+      try {
+        const response = await ViewApi.PostView(videoId);
+        console.log("OK:", response);
+        setViewCounted(true);
+      } catch (e) {
+        console.error("Lỗi tăng view:", e);
+      }
+    }
+  };
+  const interval = setInterval(checkView, 1000);
+  return () => clearInterval(interval);
+}, [videoKey, viewCounted]);
+  // ---------------------------------------------------------------
 
   // Dừng video khi component unmount
   useEffect(() => {
@@ -38,7 +76,7 @@ export function VideoPlayer({ videoKey, thumbnailUrl, title }: VideoPlayerProps)
           ref={videoRef}
           className="w-full h-full"
           controls
-          autoPlay
+          autoPlay = {process.env.NODE_ENV === "production"}
           poster={thumbnailUrl}
           preload="metadata"
         >

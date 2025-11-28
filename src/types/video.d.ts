@@ -35,6 +35,8 @@ export interface VideoItems {
   createdAt: string; // ISO date
   channelName?: string;
 
+  userName: string;
+  userAvatarUrl: string;
 }
 
 export interface VideoInfo {
@@ -46,4 +48,17 @@ export interface VideoInfo {
 export interface VideoResponse {
   videoId: string;
   uploadUrl: string;
+}
+
+export interface VideoSearchItem {
+  videoId: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  channelId: string;
+  channelName: string;
+  viewCount: number;
+  likeCount: number;
+  duration: number; // đơn vị giây
+  createdAt: string; // ISO date string
 }

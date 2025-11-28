@@ -70,9 +70,13 @@ export function SideBar() {
 
   return (
     <aside
-      className={`flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden
-        ${isExpanded ? "w-64" : "w-20"}`}
-      style={{ height: "calc(100vh - 64px)" }}
+      // aside is part of the flex layout, won't overlay the main content
+      className={`
+        flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden
+        ${isExpanded ? "w-64" : "w-0 md:w-20"} 
+        
+      `}
+      style={{ height: "calc(100vh - 64px)" }} // match header height (64px)
     >
       <nav className="px-2 py-4 h-full">
         <div className="flex flex-col gap-1">

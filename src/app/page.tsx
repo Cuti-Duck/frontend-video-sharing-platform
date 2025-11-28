@@ -1,11 +1,10 @@
-
 import { VideoCard } from "@/components/VideoCard";
 import VideoApi from "@/lib/videoApi";
 import { VideoItems } from "@/types/video";
-// import { useEffect, useState } from "react";
 
 export default async function Home() {
-  const videos = await VideoApi.GetVideos();
+  const videos = await VideoApi.GetVideosTrending();
+  console.log("videos",videos)
 
   return (
     <div className="">
@@ -17,8 +16,8 @@ export default async function Home() {
               userId={video.userId}
               thumbnailUrl={video.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
               title={video.title}
-              userName={""}
-              avatarUrl={""}
+              userName={video.userName}
+              avatarUrl={video.userAvatarUrl}
               viewCount={video.viewCount}
               key={video.videoId}
           />
