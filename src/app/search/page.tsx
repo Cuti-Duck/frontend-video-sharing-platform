@@ -3,6 +3,7 @@ import { SmallVideoCard } from "@/components/SmallVideoCard";
 import SearchApi from "@/lib/searchApi";
 import { ChannelSearchItem } from "@/types/channel";
 import { VideoSearchItem } from "@/types/video";
+import Link from "next/link";
 
 interface SearchPageProps {
   searchParams: { query?: string };
@@ -46,9 +47,10 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
             ))}
             {/* Hiển thị channel */}
             {channels.map((channel: ChannelSearchItem) => (
-              <ChannelCard
-                key={channel.channelId}
-                userId={channel.channelId} />
+              <Link key={channel.channelId} href={`/channel/${channel.channelId}`}>
+                <ChannelCard userId={channel.channelId} />
+              </Link>
+              
             ))}
         </div>
       )}
