@@ -6,10 +6,10 @@ import { Comment, CommentVideoForm, PostCommentForm } from "@/types/comment";
 import { ArrowDownNarrowWide } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { CommentCard } from "./CommentCard";
+import { TextAreaComment } from "./TextAreaComment";
 
 
 export function CommentFrame({videoId} : {videoId:string}) {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [totalComment,setTotalComment] = useState(0)
     const [comments,setComments] = useState<Comment[]>([])
     const [showSort, setShowSort] = useState(false)
@@ -29,14 +29,12 @@ export function CommentFrame({videoId} : {videoId:string}) {
                 sortBy: sort,
                 limit: 20,
                 offset: 0,
-                includeReplies: true,
+                includeReplies: false,
                 parentCommentId: undefined
             }
             const response = await CommentApi.GetComments(data)
             setTotalComment(response.data.rootCommentsCount)
             setComments(response.data.comments)
-            console.log("comment",response.data)
-            
         }catch(error){
             console.log(error)
         }finally{
@@ -53,6 +51,7 @@ export function CommentFrame({videoId} : {videoId:string}) {
             }
             const response = await CommentApi.PostComment(videoId, data)
             console.log(response)
+            setNewComment("")
             fetchCommentVideo()
 
         }catch(error){
@@ -67,7 +66,7 @@ export function CommentFrame({videoId} : {videoId:string}) {
                     sortBy: sortType,
                     limit: 20,
                     offset: 0,
-                    includeReplies: true,
+                    includeReplies: false,
                     parentCommentId: undefined
                 }
                 const response = await CommentApi.GetComments(data)
@@ -78,14 +77,6 @@ export function CommentFrame({videoId} : {videoId:string}) {
             console.log(error)
         }
     }
-
-    const autoResize = () => {
-        const t = textareaRef.current;
-        if (!t) return;
-
-        t.style.height = "auto"; // reset trước
-        t.style.height = t.scrollHeight + "px"; // set theo nội dung
-    };
 
     return(
         <div className="flex flex-col gap-5">
@@ -110,35 +101,13 @@ export function CommentFrame({videoId} : {videoId:string}) {
                 {user && <div className="w-10 h-10 rounded-full bg-center bg-cover" 
                     style={{ backgroundImage: `url(${user.avatarUrl})` }}/>}
                 <div className="flex-1">
-                    <textarea 
-                        ref={textareaRef}
-                        value={newComment}
-                        onChange={(e)=> setNewComment(e.target.value)}
-                        onInput={autoResize}
-                        className="
-                            no-scrollbar
-                            w-full 
-                            border-b 
-                            border-[#2f2f2f]
-                            focus:border-white-500 
-                            outline-none 
-                            resize-none 
-                            pb-1 
-                            transition-all"
-                        rows={1}
-                        placeholder="Add a Comment..."
-                    />
-                    {newComment.trim() &&
-                        <div className="flex justify-end">
-                            <button onClick={()=>handleSendComment()} className="bg-[#2f2f2f] text-white px-4 py-1 rounded hover:bg-[#838383] transition">Submit</button>
-                        </div>
-                    }
+                    <TextAreaComment value={newComment} setValue={setNewComment} handle={handleSendComment} />
                 </div>
             </div>
             {/*comment*/}           
             <div>
                 {comments && comments.map((comment: Comment)=>(
-                    <CommentCard key={comment.commentId} comment={comment}/>
+                    <CommentCard key={comment.commentId} comment={comment} fetchComment={()=>fetchCommentVideo()}/>
                 ))}
             </div>
         </div>

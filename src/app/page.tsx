@@ -1,10 +1,10 @@
-
 import { VideoCard } from "@/components/VideoCard";
 import VideoApi from "@/lib/videoApi";
 import { VideoItems } from "@/types/video";
 
 export default async function Home() {
   const videos = await VideoApi.GetVideos();
+  console.log("videos",videos)
 
   return (
     <div className="">

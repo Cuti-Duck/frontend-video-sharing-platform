@@ -17,7 +17,7 @@ const CommentApi = {
 
     PostComment: async(videoId: string, data:PostCommentForm) => axiosClient.post(`/videos/${videoId}/comments`,data),
 
-    PutComment: async(videoId: string, commentId:string, content: string) => axiosClient.put(`/videos/${videoId}/comments/${commentId}`,content),
+    PutComment: async(videoId: string, commentId:string, content: string) => axiosClient.put(`/videos/${videoId}/comments/${commentId}`,{content}),
 
     DeleteComment: async(videoId: string, commentId:string) => axiosClient.delete(`/videos/${videoId}/comments/${commentId}`)
 }

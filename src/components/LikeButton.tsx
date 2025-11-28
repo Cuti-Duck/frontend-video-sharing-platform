@@ -11,14 +11,10 @@ export function LikeButton({ videoId, likeCount}: { videoId: string, likeCount: 
 
     useEffect(()=>{
         const fetchLikeStatus = async () => {
-            if(!isAuthenticated){
-                return
-            }
+            if(!isAuthenticated) return
             try{
                 const response = await LikeApi.GetLikeVideo(videoId)
-
                 setIsLiked(response.data.isLiked)
-
             }catch(error){
                 console.log(error)
             }

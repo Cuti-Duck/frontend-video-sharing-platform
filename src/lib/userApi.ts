@@ -1,4 +1,4 @@
-import { User, UserProfile, UserResponse } from "@/types/user";
+import { UserProfile} from "@/types/user";
 import axiosClient from "./axiosClient";
 
 const UserApi = {

@@ -60,11 +60,8 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
     <div className="group cursor-pointer block">
       <div onClick={() => handlethumbnailClick()}>
           <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
-            <img 
-              src={thumbnailUrl}
-              alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-            />
+            <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105"
+            style={{ backgroundImage: `url(${thumbnailUrl})` }}></div>
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <Play className="w-12 h-12 text-white" />
             </div>
@@ -72,13 +69,10 @@ export function VideoCard({ videoId, userId, thumbnailUrl, avatarUrl, title, use
       </div>
       <div className="flex flex-row gap-2 mt-3">
         {avatarUrl && (
-          <div className="w-[10%]">
-          <img 
-            src={avatarUrl} 
-            alt={userName} 
-            className="w-full aspect-square object-cover rounded-full"
-          />
-        </div>)}
+          <div>
+            <div className="w-12 h-12 bg-cover bg-center aspect-square object-cover rounded-full"
+            style={{ backgroundImage: `url(${avatarUrl})` }}></div>
+          </div>)}
           
         <div>
           <h3 className="text-md font-bold line-clamp-1">{title}</h3>
