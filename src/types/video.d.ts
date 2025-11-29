@@ -1,14 +1,17 @@
 export interface Video {
-  videoUrl: string;
-
   videoId: string;
   channelId: string;
   userId: string;
   title: string;
   description: string;
-  duration: number;
+  status: string;
+  type: string;
   playbackUrl: string;
   thumbnailUrl: string;
+  key: string;
+  duration: number;
+  viewCount: number;
+  ikeCount: number;
   createdAt: string;
   updatedAt: string;
   createdFromStreamId: string;
