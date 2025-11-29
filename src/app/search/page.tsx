@@ -41,7 +41,7 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
             {/* Hiển thị channel */}
             {channels.map((channel: ChannelSearchItem) => (
               <Link key={channel.channelId} href={`/channel/${channel.channelId}`}>
-                <ChannelCard userId={channel.channelId} />
+                <ChannelCard userId={channel.channelId} layout="horizontal" limit={false} showButton={false}/>
               </Link>
               
             ))}

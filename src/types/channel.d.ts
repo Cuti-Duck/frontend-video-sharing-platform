@@ -8,6 +8,23 @@ export interface Channel {
   createdAt: string;
 }
 
+export interface ChannelResponse {
+  channelId: string;
+  userId: string;
+  name: string;
+  description: string;
+  subscriberCount: number;
+  videoCount: number;
+  createdAt: string; // ISO date string
+  channelArn: string;
+  playbackUrl: string;
+  ingestEndpoint: string;
+  streamKeyArn: string;
+  isLive: boolean;
+  currentStreamId: string | null;
+  avatarUrl: string;
+}
+
 export interface ChannelSearchItem {
   channelId: string;
   channelName: string;
