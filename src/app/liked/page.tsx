@@ -156,12 +156,8 @@ export default function LikedVideosPage() {
                         <VideoCard
                             key={video.videoId}
                             videoId={video.videoId}
-                            userId={video.userId || ""}
-                            thumbnailUrl={video.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
-                            title={video.title}
-                            userName={video.channelName}
-                            avatarUrl=""
-                            viewCount={video.viewCount}
+                            layout="vertical"
+                            limit={false}
                         />
                     ))}
                 </div>

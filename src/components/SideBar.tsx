@@ -89,15 +89,6 @@ export function SideBar() {
             {isExpanded && <span className="ml-3">Trang chủ</span>}
           </Link>
 
-          <Link
-            href="/trending"
-            className={`flex items-center rounded-lg hover:bg-[#838383] transition-colors
-              ${isExpanded ? "px-3 py-2" : "p-2 justify-center"}`}
-          >
-            <TrendingUp className="w-5 h-5" />
-            {isExpanded && <span className="ml-3">Thịnh hành</span>}
-          </Link>
-
           {/* remaining items only visible when expanded */}
           <div
             className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
@@ -105,11 +96,6 @@ export function SideBar() {
 
             {isExpanded && (
               <>
-                <Link href="/history" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
-                  <Clock className="w-5 h-5" />
-                  <span className="ml-3">Lịch sử</span>
-                </Link>
-
                 <Link href="/liked" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                   <ThumbsUp className="w-5 h-5" />
                   <span className="ml-3">Video đã thích</span>
@@ -140,24 +126,15 @@ export function SideBar() {
 
                 <hr className="my-3 border-gray-700" />
 
-                {isAuthenticated && user ? (
+                {isAuthenticated && user &&
                   <>
                     <Link href={`/channel/${user.userId}`} className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
                       <User className="w-5 h-5" />
                       <span className="ml-3">Kênh của tôi</span>
                     </Link>
 
-                    <Link href="/setting" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
-                      <Settings className="w-5 h-5" />
-                      <span className="ml-3">Cài đặt</span>
-                    </Link>
                   </>
-                ) : (
-                  <Link href="/auth/login" className="flex items-center px-3 py-2 rounded-lg hover:bg-[#838383]">
-                    <User className="w-5 h-5" />
-                    <span className="ml-3">Đăng nhập</span>
-                  </Link>
-                )}
+                }
               </>
             )}
           </div>
