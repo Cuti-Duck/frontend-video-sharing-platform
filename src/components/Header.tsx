@@ -9,6 +9,8 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { DownDropMenu } from "./DownDropMenu";
 import UploadVideoModal from "./UploadVideoModal";
+import { Video } from "lucide-react";
+import CreateLivestreamModal from "./CreateLivestreamModal";
 import SearchBar from "./SearchBar";
 
 export function Header() {
@@ -17,7 +19,7 @@ export function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showUpdateVideo, setShowUpdateVideo] = useState(false);
-  
+  const [showLivestream, setShowLivestream] = useState(false);
   console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
   return (
     <header className="border-gray-200 sticky top-0 z-50">
@@ -58,25 +60,34 @@ export function Header() {
 
         {/* Thanh tìm kiếm ở giữa */}
         <div className="flex-1 flex justify-center">
-          <SearchBar/>
+          <SearchBar />
         </div>
 
         {/* Các nút bên phải */}
         <div className="flex items-center space-x-4 flex-shrink-0">
-          
+
           {isLoading ? (
             <span className="text-white text-sm">Loading...</span>
           ) : user ? (
             <div className="flex items-center space-x-2">
               <button onClick={() => setShowUpdateVideo(true)}
                 className="flex items-center space-x-1 text-white-800 hover:text-[#838383]">
-                  
+
                 <Upload className="w-5 h-5" />
               </button>
+
+              <button
+                onClick={() => setShowLivestream(true)}
+                className="flex items-center space-x-1 text-white hover:text-red-500 transition-colors"
+                title="Tạo Livestream"
+              >
+                <Video className="w-5 h-5" />
+              </button>
+
               <DownDropMenu user={user} logout={logout} ></DownDropMenu>
             </div>
           ) : (
-            <button 
+            <button
               onClick={() => setShowLogin(true)}
               className="flex items-center space-x-1 text-white-800 hover:text-[#838383]"
             >
@@ -86,29 +97,43 @@ export function Header() {
           )}
         </div>
       </div>
-      <LoginModal 
-        isOpen={showLogin} 
+      <LoginModal
+        isOpen={showLogin}
         onClose={() => setShowLogin(false)}
         onSwitchToRegister={() => {
           setShowLogin(false);
           setShowRegister(true);
         }}
       />
-      <RegisterModal 
-        isOpen={showRegister} 
+      <RegisterModal
+        isOpen={showRegister}
         onClose={() => setShowRegister(false)}
         onSwitchToLogin={() => {
           setShowRegister(false);
           setShowLogin(true);
         }}
       />
-      {user && 
-      <UploadVideoModal
-        isOpen={showUpdateVideo}
-        onClose={()=> setShowUpdateVideo(false)}
-        channelId={user.channelId}
-      />
+      {user &&
+        <UploadVideoModal
+          isOpen={showUpdateVideo}
+          onClose={() => setShowUpdateVideo(false)}
+          channelId={user.channelId}
+        />
       }
+
+      {user && (
+        <>
+          <UploadVideoModal
+            isOpen={showUpdateVideo}
+            onClose={() => setShowUpdateVideo(false)}
+            channelId={user.channelId}
+          />
+          <CreateLivestreamModal
+            isOpen={showLivestream}
+            onClose={() => setShowLivestream(false)}
+          />
+        </>
+      )}
     </header>
 
   );

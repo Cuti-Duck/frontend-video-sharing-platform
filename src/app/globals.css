@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 h3 {
@@ -27,14 +27,6 @@ select {
   background-color: #1a1a1a;
   color: #ededed;
   border-color: #838383;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 @theme inline {

@@ -14,6 +14,11 @@ export interface Video {
   ikeCount: number;
   createdAt: string;
   updatedAt: string;
+  createdFromStreamId: string;
+  type: string;
+  likeCount: number;
+  viewCount: number;
+  channelName?: string;
 }
 
 export interface VideoItems {
@@ -31,6 +36,8 @@ export interface VideoItems {
   viewCount: number;
   likeCount: number;
   createdAt: string; // ISO date
+  channelName?: string;
+
   userName: string;
   userAvatarUrl: string;
 }

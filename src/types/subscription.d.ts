@@ -12,3 +12,11 @@ export interface Subscriber {
   channelName: string;
   subscribedAt: string;
 }
+
+export interface SubscribedChannel {
+  channelId: string;
+  channelName: string;
+  avatarUrl: string | null;
+  subscriberCount: number;
+  subscribedAt: string;
+}
