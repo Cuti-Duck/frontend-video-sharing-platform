@@ -254,14 +254,15 @@
 //     );
 // }
 
-// export default function LivePage() {
-//     return (
-//         <Suspense fallback={
-//             <div className="flex items-center justify-center min-h-screen bg-black">
-//                 <span className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-//             </div>
-//         }>
-//             <LivestreamPlayer />
-//         </Suspense>
-//     );
-// }
+export default function LivePage() {
+    return (
+        // <Suspense fallback={
+        //     <div className="flex items-center justify-center min-h-screen bg-black">
+        //         <span className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+        //     </div>
+        // }>
+        //     <LivestreamPlayer />
+        // </Suspense>
+        <div></div>
+    );
+}
