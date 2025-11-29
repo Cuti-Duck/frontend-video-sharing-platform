@@ -1,15 +1,19 @@
-
 import { VideoCard } from "@/components/VideoCard";
-import { mockVideos } from "@/lib/mockData";
+import VideoApi from "@/lib/videoApi";
+import { VideoItems } from "@/types/video";
 
-export default function Home() {
+export default async function Home() {
+  const videos = await VideoApi.GetVideosTrending();
+  console.log("videos",videos)
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Videos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {mockVideos.map((video) => (
-          <VideoCard key={video.id} video={video} />
+    <div className="">
+      {/* {isLoading && <p>Loading...</p>} */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.data.map((video: VideoItems) => (
+          <VideoCard key={video.videoId} videoId={video.videoId} layout="vertical" limit={false}/>
         ))}
+        
       </div>
     </div>
   );
