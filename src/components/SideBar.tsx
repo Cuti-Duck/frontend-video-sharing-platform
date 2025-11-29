@@ -27,7 +27,6 @@ export function SideBar() {
         setMyLivestream(null);
         return;
       }
-
       try {
         const savedStream = localStorage.getItem("myLivestream");
         if (savedStream) {
