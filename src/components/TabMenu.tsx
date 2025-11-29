@@ -5,7 +5,6 @@ import { VideoItems } from "@/types/video";
 import { SubscribedChannel } from "@/types/subscription";
 import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
-import SubscriptionApi from "@/lib/subscriptionApi";
 import { UserResponse } from "@/types/user";
 import SubscriptionApi from "@/lib/subscriptionApi";
 import { Subscriber } from "@/types/subscription";
@@ -19,7 +18,7 @@ interface TabMenuProps {
 
 export default function TabMenu({ userId }: TabMenuProps) {
     const { user: currentUser } = useAuth(); // Lấy user đang đăng nhập
-    const [Tab, setTab] = useState<'videos' | 'about' | 'subVideos' | 'subscriber>('videos');
+    const [Tab, setTab] = useState<'videos' | 'about' | 'subVideos' | 'subscriber'>('videos');
 
     const [user, setUser] = useState<UserResponse>();
     const [subscribers,setSubscribers] = useState<Subscriber[]>([]);
@@ -104,7 +103,7 @@ export default function TabMenu({ userId }: TabMenuProps) {
 
 
                 {isOwnProfile && (
-                    <button className={`hover:text-white ${Tab === "subVideos" ? "text-white" : ""}`} onClick={() => setTab("subVideos")}>Subscribed Channel</button>
+                    <button className={`hover:text-white ${Tab === "subVideos" ? "text-white" : ""}`} onClick={() => setTab("subVideos")}>Video Subscribed Channel</button>
                 )}
 
             </div>
@@ -141,12 +140,8 @@ export default function TabMenu({ userId }: TabMenuProps) {
                                 <VideoCard
                                     key={video.videoId}
                                     videoId={video.videoId}
-                                    userId={video.userId}
-                                    thumbnailUrl={video.thumbnailUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREO3tkIJnmJZcWmgLLR-z973QVHQ8zbwDGnw&s"}
-                                    title={video.title}
-                                    userName={video.channelName || ""}
-                                    avatarUrl={""}
-                                    viewCount={video.viewCount}
+                                    layout="vertical"
+                                    limit={false}
                                 />
                             ))}
                         </div>

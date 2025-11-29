@@ -43,11 +43,6 @@ export default function RootLayout({
                 </main>
               </div>
             </LivestreamProvider>
-              
-              <main className="flex-1 transition-all duration-300 p-3 overflow-y-auto">
-                {children}
-              </main>
-            </div>
           </SidebarProvider>
         </AuthProvider>
       </body>
