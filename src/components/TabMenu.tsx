@@ -7,16 +7,22 @@ import VideoApi from "@/lib/videoApi";
 import UserApi from "@/lib/userApi";
 import SubscriptionApi from "@/lib/subscriptionApi";
 import { UserResponse } from "@/types/user";
+import SubscriptionApi from "@/lib/subscriptionApi";
+import { Subscriber } from "@/types/subscription";
+import { ChannelCard } from "./ChannelCard";
 import { useAuth } from "@/context/AuthContext";
 
 interface TabMenuProps {
     userId: string;
 }
 
+
 export default function TabMenu({ userId }: TabMenuProps) {
     const { user: currentUser } = useAuth(); // Lấy user đang đăng nhập
-    const [Tab, setTab] = useState<'videos' | 'about' | 'subVideos'>('videos');
+    const [Tab, setTab] = useState<'videos' | 'about' | 'subVideos' | 'subscriber>('videos');
+
     const [user, setUser] = useState<UserResponse>();
+    const [subscribers,setSubscribers] = useState<Subscriber[]>([]);
     const [videos, setVideos] = useState<VideoItems[]>([]);
     const [subscribedVideos, setSubscribedVideos] = useState<VideoItems[]>([]);
     const [isGetting, setGetting] = useState(false);
@@ -32,6 +38,8 @@ export default function TabMenu({ userId }: TabMenuProps) {
                 setUser(response.data.data)
                 const resVideo = await VideoApi.GetVideoByChannelId(response.data.data.channelId)
                 setVideos(resVideo.data);
+                const resSubscriber = await SubscriptionApi.GetSubscriber(response.data.data.channelId)
+                setSubscribers(resSubscriber.data.subscribers)
             } catch (error) {
                 console.error('Error fetching videos:', error);
             } finally {
@@ -89,13 +97,16 @@ export default function TabMenu({ userId }: TabMenuProps) {
     return (
         <div>
             <div className="flex flex-row gap-5 text-md text-gray-400 border-b border-gray-800 pb-2 mb-4">
-                <button className={`hover:text-white ${Tab === "videos" ? "text-white" : ""}`} onClick={() => setTab("videos")}>Video</button>
+
+                <button className={`hover:text-white ${Tab === "videos" ? "text-white": ""}`} onClick={() => setTab("videos")}>Video</button>
+                <button className={`hover:text-white ${Tab === "about" ? "text-white": ""}`} onClick={() => setTab("about")}>About</button>
+                <button className={`hover:text-white ${Tab === "about" ? "text-white": ""}`} onClick={() => setTab("subscriber")}>Subscribers</button>
+
 
                 {isOwnProfile && (
                     <button className={`hover:text-white ${Tab === "subVideos" ? "text-white" : ""}`} onClick={() => setTab("subVideos")}>Subscribed Channel</button>
                 )}
 
-                <button className={`hover:text-white ${Tab === "about" ? "text-white" : ""}`} onClick={() => setTab("about")}>About</button>
             </div>
 
             {Tab === 'videos' && (
@@ -146,6 +157,18 @@ export default function TabMenu({ userId }: TabMenuProps) {
             {Tab === 'about' && (
                 <div>
                     <p>About Content</p>
+                </div>
+            )}
+
+            {Tab === 'subscriber' && (
+                <div className="grid grid-cols-5">
+                    {subscribers
+                    .sort((a, b) => new Date(b.subscribedAt).getTime() - new Date(a.subscribedAt).getTime())
+                    .map((subscriber) => (
+                        <ChannelCard key={subscriber.channelId} userId={subscriber.channelId} layout="vertical" limit={false} showButton={false}/>
+                    ))
+
+                    }
                 </div>
             )}
         </div>

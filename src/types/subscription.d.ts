@@ -7,9 +7,9 @@ export interface Subscription {
 }
 
 export interface Subscriber {
-  avatarUrl: string;
   channelId: string;
   channelName: string;
+  avatarUrl: string;
   subscribedAt: string;
 }
 

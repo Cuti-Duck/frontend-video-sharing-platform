@@ -7,10 +7,14 @@ import { useEffect, useState } from "react"
 import { TextAreaComment } from "./TextAreaComment"
 import CommentApi from "@/lib/commentApi"
 import CommentLikeApi from "@/lib/commentLikeApi"
+import { timeAgo } from "@/utils/time"
+import { UserResponse } from "@/types/user"
+import UserApi from "@/lib/userApi"
 
 export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchComment: ()=> void} ) {
     const { user } = useAuth()
     const [comments, setComments] = useState<Comment[]>(comment.replies||[])
+    const [thisUser, setThisUser] = useState<UserResponse>()
     const [showReplies, setShowReplies] = useState(false)
     const [showAction, setShowAction] = useState<"menu"|"edit"|"reply"|"none">("none")
     const [editComment, setEditComment] = useState(comment.content)
@@ -19,8 +23,21 @@ export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchCom
     const [newComment,setNewComment] = useState("")
     const [likeCount,setLikeCount] = useState(comment.likeCount)
     const [liked,setLiked] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() =>{
+        const fetchUser = async() => {
+            setLoading(true)
+            try{
+                const response = await UserApi.GetUserById(comment.userId)
+                setThisUser(response.data.data)
+            }catch(error){
+                console.log(error)
+            }finally{
+                setLoading(false)
+            }
+        }
+        fetchUser()
         handleLiked()
     },[])
 
@@ -147,26 +164,24 @@ export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchCom
             }
         }
     }
-
+    if(loading){return <div>Loading...</div>}
+    if(!thisUser){return <div></div>}
     return(
         <div className="flex flex-col">
             <div className="flex flex-row w-full gap-2">
                 {/*avatar*/}
                 <div className="w-10 h-10 rounded-full bg-center bg-cover" 
-                    style={{backgroundImage: `url(${comment.userAvatarUrl})` }}/>
+                    style={{backgroundImage: `url(${thisUser.avatarUrl})` }}/>
                 {/*content*/}
                 <div className=" flex flex-col w-full">
                     {/*Name CreatAt*/}
                     <div className="flex items-center gap-3">
-                        <span className="text-md">{comment.userName}</span>
-                        <span className="text-sm text-[#838383]"> {comment.createdAt}</span>
+                        <span className="text-md">{thisUser.name}</span>
+                        <span className="text-sm text-[#838383]"> {timeAgo(comment.createdAt)}</span>
                     </div>
                     {/*Content*/}
-                    <div className="mt-1 text-[15px] leading-snug">
-                        
+                    <div className="mt-1 text-[15px] leading-snug">      
                             <span>{content}</span>
-                        
-                        
                     </div>
                     {/*Like*/}
                     <div className="flex items-center gap-4 mt-2 text-[#838383]">
@@ -203,7 +218,7 @@ export function CommentCard( {comment, fetchComment}: {comment:Comment, fetchCom
                     }
                 </div>
 
-                {(user && user.userId === comment.userId) &&
+                {(user && user.userId === thisUser.userId) &&
                     <div className="flex flex-col gap-2 rounded items-end">
                         <button onClick={()=> toggle("menu")} className="rounded transition">
                             <EllipsisVertical/>

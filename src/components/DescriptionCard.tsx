@@ -1,5 +1,6 @@
 'use client';
 
+import { timeAgo } from "@/utils/time";
 import { useState } from "react";
 
 interface DescriptionCardProps {
@@ -14,7 +15,7 @@ export function DescriptionCard({viewCount, uploadAt, description}: DescriptionC
     const toggleExpanded = () => setExpanded(!expanded);
     return (
         <div className="bg-[#D1D5DB]/20 rounded-lg px-4 py-3 mb-6">
-            <h3 className="text-lg font-bold">{viewCount} views • {uploadAt}</h3>
+            <h3 className="text-lg font-bold">{viewCount} views • {timeAgo(uploadAt)}</h3>
             <p className={`text-md ${expanded ? "line-clamp-none" : "line-clamp-2"} transition-all`}>{description}</p>
             {description.split(" ").length > 20 && (
                 <button
