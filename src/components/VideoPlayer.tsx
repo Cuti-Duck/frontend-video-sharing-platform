@@ -1,19 +1,21 @@
 'use client'
 import ViewApi from "@/lib/viewApi";
+import Hls from "hls.js";
 import { useEffect, useRef, useState } from "react";
 
 interface VideoPlayerProps {
   videoId: string
   videoKey: string;
   thumbnailUrl: string;
+  playbackUrl: string;
   title: string;
 }
 
-export function VideoPlayer({videoId, videoKey, thumbnailUrl, title }: VideoPlayerProps) {
+export function VideoPlayer({videoId, videoKey, thumbnailUrl, title, playbackUrl }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [quality, setQuality] = useState<"1080p" | "720p">("1080p");
   const qualities = ["1080p", "720p"] as const;
-  const videoUrl = videoKey ? `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${videoKey.replace(/_\d+p\.mp4$/, `_${quality}.mp4`)}` : null;
+  const videoUrl = videoKey ? `${process.env.NEXT_PUBLIC_VIDEO_BASE_URL}/${videoKey.replace(/_\d+p\.mp4$/, `_${quality}.mp4`)}` : playbackUrl;
   const [viewCounted, setViewCounted] = useState(false);
 
   // 🔥 Check % xem và gọi API tăng view
@@ -52,6 +54,33 @@ export function VideoPlayer({videoId, videoKey, thumbnailUrl, title }: VideoPlay
   return () => clearInterval(interval);
 }, [videoKey, viewCounted]);
   // ---------------------------------------------------------------
+  //change hls 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Nếu là .m3u8
+    if (videoUrl.endsWith(".m3u8")) {
+
+      if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        // Safari hỗ trợ native HLS
+        video.src = videoUrl;
+      } else if (Hls.isSupported()) {
+        // Chrome/Edge/Firefox
+        const hls = new Hls();
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+
+        return () => hls.destroy();
+      }
+    } 
+    else {
+      // Nếu là mp4
+      video.src = videoUrl;
+    }
+
+  }, [videoUrl]);
+
 
   // Dừng video khi component unmount
   useEffect(() => {
@@ -94,7 +123,7 @@ export function VideoPlayer({videoId, videoKey, thumbnailUrl, title }: VideoPlay
         <h1 className="flex-1 mt-4 text-2xl font-bold">{title}</h1>
   
         <select value={quality} onChange={(e) =>setQuality(e.target.value as "1080p" | "720p")} 
-          className="border px-3 py-2 rounded-md ml-auto">
+          className="border h-12 px-3 py-2 rounded-md ml-auto">
             {qualities.map((q) => (
             <option key={q} value={q}>
               {q}

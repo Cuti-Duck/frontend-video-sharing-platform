@@ -14,6 +14,8 @@ import CreateLivestreamModal from "./CreateLivestreamModal";
 import SearchBar from "./SearchBar";
 import { useNotification } from "@/context/NotificationContext";
 import { NotificationPanel } from "./NotificationPanel";
+import { useRouter } from "next/navigation";
+
 
 export function Header() {
   const { toggleSidebar } = useSidebar();
@@ -26,6 +28,8 @@ export function Header() {
   const { unreadCount } = useNotification();
 
   console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
+
+  const router = useRouter()
   return (
     <header className="border-gray-200 sticky top-0 z-50">
       <div className="bg-black px-4 py-3 flex items-center justify-between">
@@ -41,51 +45,51 @@ export function Header() {
         </button>
 
         {/* Logo bên trái */}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40" className="flex-shrink-0">
-          <g fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="4" y="8" width="48" height="10" fill="#a0e9ff" stroke="#000" />
-            <rect x="4" y="18" width="48" height="30" fill="white" stroke="#000" />
-            <rect x="4" y="48" width="48" height="8" fill="#a0e9ff" stroke="#000" />
-            <circle cx="10" cy="13" r="1" fill="black" stroke="none" />
-            <circle cx="15" cy="13" r="1" fill="black" stroke="none" />
-            <circle cx="20" cy="13" r="1" fill="black" stroke="none" />
-            <polygon points="23,26 38,33 23,40" fill="#00aeff" stroke="#000" />
-            <circle cx="50" cy="17" r="10" fill="#ffdd40" stroke="#000" />
-            <line x1="50" y1="12" x2="44" y2="20" stroke="#000" />
-            <line x1="44" y1="20" x2="56" y2="20" stroke="#000" />
-            <circle cx="50" cy="12" r="2" fill="white" stroke="#000" />
-            <circle cx="44" cy="20" r="2" fill="white" stroke="#000" />
-            <circle cx="56" cy="20" r="2" fill="white" stroke="#000" />
-          </g>
-        </svg>
+        <div onClick={()=>router.push("/")}  className="flex flex-row items-center cursor-default">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40" className="flex-shrink-0">
+              <g fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="4" y="8" width="48" height="10" fill="#fdba74" stroke="#000" />
+                <rect x="4" y="18" width="48" height="30" fill="#fdba74" stroke="#000" />
+                <rect x="4" y="48" width="48" height="8" fill="#fdba74" stroke="#000" />
+                <circle cx="10" cy="13" r="1" fill="black" stroke="none" />
+                <circle cx="15" cy="13" r="1" fill="black" stroke="none" />
+                <circle cx="20" cy="13" r="1" fill="black" stroke="none" /> 
+                <polygon points="23,26 38,33 23,40" fill="#ffffffff" stroke="#000" />
+                {/* <circle cx="50" cy="17" r="10" fill="#ffdd40" stroke="#000" />
+                <line x1="50" y1="12" x2="44" y2="20" stroke="#000" />
+                <line x1="44" y1="20" x2="56" y2="20" stroke="#000" />
+                <circle cx="50" cy="12" r="2" fill="white" stroke="#000" />
+                <circle cx="44" cy="20" r="2" fill="white" stroke="#000" />
+                <circle cx="56" cy="20" r="2" fill="white" stroke="#000" /> */}
+              </g>
+            </svg>
 
-        <Link href="/" className="text-xl font-bold text-white-800 flex-shrink-0">
-          VideoShare
-        </Link>
+              <div className="hidden md:flex flex-row ml-2">
+                <span className="text-xl font-bold">Video</span>
+                <span className="text-xl font-bold bg-orange-300 text-black">Share</span>
+              </div>
+        </div>
+        
+
+        
 
         {/* Thanh tìm kiếm ở giữa */}
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 mx-2 sm:mx-4">
           <SearchBar />
         </div>
 
         {/* Các nút bên phải */}
-        <div className="flex items-center space-x-4 flex-shrink-0">
+        <div className="flex flex-row items-center flex-shrink-0">
 
           {isLoading ? (
             <span className="text-white text-sm">Loading...</span>
           ) : user ? (
-            <div className="flex items-center space-x-2">
-              <button onClick={() => setShowUpdateVideo(true)}
-                className="flex items-center space-x-1 text-white-800 hover:text-[#838383]">
-
+            <div className="flex items-center gap-5">
+              <button onClick={() => setShowUpdateVideo(true)} title="Upload video" className="flex items-center space-x-1 text-white-800 hover:text-[#838383]">
                 <Upload className="w-5 h-5" />
               </button>
 
-              <button
-                onClick={() => setShowLivestream(true)}
-                className="flex items-center space-x-1 text-white hover:text-red-500 transition-colors"
-                title="Tạo Livestream"
-              >
+              <button onClick={() => setShowLivestream(true)} className="flex items-center space-x-1 text-white hover:text-red-500 transition-colors" title="Create Livestream">
                 <Video className="w-5 h-5" />
               </button>
 
@@ -104,10 +108,7 @@ export function Header() {
               <DownDropMenu user={user} logout={logout} ></DownDropMenu>
             </div>
           ) : (
-            <button
-              onClick={() => setShowLogin(true)}
-              className="flex items-center space-x-1 text-white-800 hover:text-[#838383]"
-            >
+            <button onClick={() => setShowLogin(true)} className="flex items-center space-x-1 text-white-800 hover:text-[#838383]">
               <User className="w-5 h-5" />
               <span>Đăng nhập</span>
             </button>

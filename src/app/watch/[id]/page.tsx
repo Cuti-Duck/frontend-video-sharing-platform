@@ -32,6 +32,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
             videoKey={video.data.key}
             thumbnailUrl={video.data.thumbnailUrl}
             title={video.data.title}
+            playbackUrl={video.data.playbackUrl}
           />
           </div>
           
