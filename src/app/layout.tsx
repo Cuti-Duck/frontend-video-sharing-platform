@@ -6,6 +6,7 @@ import { SideBar } from "@/components/SideBar";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { LivestreamProvider } from "@/context/LiveStreamContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,13 +36,15 @@ export default function RootLayout({
         <AuthProvider>
           <SidebarProvider>
             <LivestreamProvider>
-              <Header />
-              <div className="flex">
-                <SideBar />
-                <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
-                  {children}
-                </main>
-              </div>
+              <NotificationProvider>
+                <Header />
+                <div className="flex">
+                  <SideBar />
+                  <main className="flex-1 transition-all duration-300 p-6 overflow-y-auto">
+                    {children}
+                  </main>
+                </div>
+              </NotificationProvider>
             </LivestreamProvider>
           </SidebarProvider>
         </AuthProvider>

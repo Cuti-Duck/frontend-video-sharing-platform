@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Upload, User } from "lucide-react";
+import { Bell, Upload, User } from "lucide-react";
 import { useSidebar } from "@/context/SidebarContext";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -12,6 +12,8 @@ import UploadVideoModal from "./UploadVideoModal";
 import { Video } from "lucide-react";
 import CreateLivestreamModal from "./CreateLivestreamModal";
 import SearchBar from "./SearchBar";
+import { useNotification } from "@/context/NotificationContext";
+import { NotificationPanel } from "./NotificationPanel";
 import { useRouter } from "next/navigation";
 
 
@@ -22,6 +24,9 @@ export function Header() {
   const [showRegister, setShowRegister] = useState(false);
   const [showUpdateVideo, setShowUpdateVideo] = useState(false);
   const [showLivestream, setShowLivestream] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const { unreadCount } = useNotification();
+
   console.log('Header - Auth state:', { user, isAuthenticated, isLoading });
 
   const router = useRouter()
@@ -88,6 +93,18 @@ export function Header() {
                 <Video className="w-5 h-5" />
               </button>
 
+              <button
+                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                className="relative p-2 hover:bg-gray-800 rounded-full transition-colors"
+              >
+                <Bell className="w-6 h-6 text-white" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
               <DownDropMenu user={user} logout={logout} ></DownDropMenu>
             </div>
           ) : (
@@ -135,6 +152,8 @@ export function Header() {
           />
         </>
       )}
+
+       <NotificationPanel isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
     </header>
 
   );
