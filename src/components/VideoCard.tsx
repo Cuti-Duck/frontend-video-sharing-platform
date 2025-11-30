@@ -90,7 +90,7 @@ export function VideoCard({videoId,layout,limit}:{videoId:string, layout: "horiz
                                     <div className="flex flex-row gap-2 items-center">
                                       {!limit && 
                                         <div className="w-12 bg-cover bg-center aspect-square rounded-full flex-shrink-0"
-                                          style={{ backgroundImage: `url(${thisUser.avatarUrl || "https://static.vecteezy.com/system/resources/thumb…fault-avatar-icon-of-social-media-user-vector.jpg"})` }}/>
+                                          style={{ backgroundImage: `url(${thisUser.avatarUrl || "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"})` }}/>
                                       }
                                       <span className="text-md line-clamp-1 text-neutral-500">{thisUser.name}</span>
                                     </div>
@@ -119,7 +119,7 @@ export function VideoCard({videoId,layout,limit}:{videoId:string, layout: "horiz
                         {layout === "vertical" &&
                             <div className="flex flex-row gap-2">
                                 <div className="h-12 bg-cover bg-center aspect-square rounded-full flex-shrink-0"
-                                    style={{ backgroundImage: `url(${thisUser.avatarUrl || "https://static.vecteezy.com/system/resources/thumb…fault-avatar-icon-of-social-media-user-vector.jpg"})` }}/>
+                                    style={{ backgroundImage: `url(${thisUser.avatarUrl || "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"})` }}/>
 
                                 <div className="flex flex-col">
                                     <span className="font-bold text-xl line-clamp-2">{video.title}</span>
