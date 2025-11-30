@@ -182,7 +182,7 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                         {/* Success Message */}
                         <div className="bg-green-900/30 border border-green-600 rounded-lg p-4">
                             <p className="text-green-400 text-center font-medium">
-                                Livestream "{title}" created successfully!
+                                Livestream {title} created successfully!
                             </p>
                         </div>
 

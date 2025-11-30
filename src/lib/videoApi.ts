@@ -1,6 +1,6 @@
 import { VideoInfo, VideoResponse } from "@/types/video";
 import axiosClient from "./axiosClient";
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 
 const VideoApi = {
     GetVideos: async () => axiosClient.get("/videos/all"),
@@ -14,7 +14,7 @@ const VideoApi = {
 
     PostVideo: async (data: VideoInfo) => axiosClient.post<VideoResponse>("/videos/create", data),
 
-    UploadVideo: async (uploadUrl: string, file: File, onProgress?: (ProgressEvent: any) => void) => {
+    UploadVideo: async (uploadUrl: string, file: File, onProgress?: (event: AxiosProgressEvent) => void) => {
         return axios.put(uploadUrl, file, {
             headers: {
                 'Content-Type': 'video/mp4',

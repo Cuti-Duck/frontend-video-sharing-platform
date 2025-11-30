@@ -5,6 +5,7 @@ import { Bell, X, Check, CheckCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Notification } from "@/types/notification";
 
 interface NotificationPanelProps {
     isOpen: boolean;
@@ -19,14 +20,14 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
         ? notifications.filter((n) => !n.isRead)
         : notifications;
 
-    const handleNotificationClick = async (notification: any) => {
+    const handleNotificationClick = async (notification: Notification) => {
         if (!notification.isRead) {
             await markAsRead(notification.notificationId);
         }
 
         const videoId =
-            notification.relatedVideoId ||
-            notification.videoId
+            notification.relatedVideoId 
+            // || notification.videoId
 
 
         if (videoId) {

@@ -51,7 +51,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             }
 
             console.log("Final notifs:", notifs);
-            notifs.forEach((n: any) => {
+            notifs.forEach((n: Notification) => {
                 console.log(`Notification: ${n.title}, RelatedVideoId: ${n.relatedVideoId}`);
             });
             setNotifications(notifs);
