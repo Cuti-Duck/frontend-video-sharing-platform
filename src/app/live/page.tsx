@@ -261,7 +261,7 @@ export default function LivePage() {
                 <span className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
             </div>
         }>
-            {/* <LivestreamPlayer /> */}
+            <LivestreamPlayer />
         </Suspense>
     );
 }

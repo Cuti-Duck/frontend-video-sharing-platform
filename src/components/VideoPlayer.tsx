@@ -123,7 +123,7 @@ export function VideoPlayer({videoId, videoKey, thumbnailUrl, title, playbackUrl
         <h1 className="flex-1 mt-4 text-2xl font-bold">{title}</h1>
   
         <select value={quality} onChange={(e) =>setQuality(e.target.value as "1080p" | "720p")} 
-          className="border px-3 py-2 rounded-md ml-auto">
+          className="border h-12 px-3 py-2 rounded-md ml-auto">
             {qualities.map((q) => (
             <option key={q} value={q}>
               {q}

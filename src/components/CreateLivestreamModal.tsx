@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, Copy, Check, Video, ExternalLink } from "lucide-react";
 import LivestreamApi from "@/lib/livestreamApi";
+import { useAuth } from "@/context/AuthContext";
 
 interface CreateLivestreamModalProps {
     isOpen: boolean;
@@ -11,6 +12,7 @@ interface CreateLivestreamModalProps {
 }
 
 export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestreamModalProps) {
+    const {user} = useAuth()
     const router = useRouter();
     const [step, setStep] = useState<"form" | "result">("form");
     const [title, setTitle] = useState("");
@@ -77,9 +79,9 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
 
     const handleGoToStream = () => {
         if (streamInfo?.playbackUrl) {
-            const encodedUrl = encodeURIComponent(streamInfo.playbackUrl);
-            const encodedTitle = encodeURIComponent(title);
-            router.push(`/live?url=${encodedUrl}&title=${encodedTitle}`);
+            // const encodedUrl = encodeURIComponent(streamInfo.playbackUrl);
+            // const encodedTitle = encodeURIComponent(title);
+            router.push(`/live/${user?.userId}`);
             handleClose();
         }
     };
