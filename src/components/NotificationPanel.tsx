@@ -3,6 +3,7 @@
 import { useNotification } from "@/context/NotificationContext";
 import { Bell, X, Check, CheckCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface NotificationPanelProps {
@@ -13,7 +14,7 @@ interface NotificationPanelProps {
 export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
     const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, isLoading } = useNotification();
     const [filter, setFilter] = useState<"all" | "unread">("all");
-
+    const router = useRouter();
     const filteredNotifications = filter === "unread"
         ? notifications.filter((n) => !n.isRead)
         : notifications;
@@ -22,9 +23,39 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
         if (!notification.isRead) {
             await markAsRead(notification.notificationId);
         }
+
+        const videoId =
+            notification.relatedVideoId ||
+            notification.videoId
+
+
+        if (videoId) {
+            console.log("Navigating to video:", videoId);
+            router.push(`/watch/${videoId}`);
+            onClose();
+            return;
+        }
+
+        console.log("Extracted videoId:", videoId);
+
         if (notification.actionUrl) {
             window.location.href = notification.actionUrl;
         }
+        // Nếu có relatedVideoId thì navigate đến trang watch video
+        if (notification.relatedVideoId) {
+            console.log("Navigating to video:", notification.relatedVideoId);
+            router.push(`/watch/${notification.relatedVideoId}`);
+            onClose();
+            return;
+        }
+        if (notification.actionUrl) {
+            console.log("Navigating to actionUrl:", notification.actionUrl);
+            router.push(notification.actionUrl);
+            onClose();
+            return;
+        }
+
+        console.log("No navigation URL found for notification:", notification);
     };
 
     if (!isOpen) return null;
@@ -64,8 +95,8 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
                         <button
                             onClick={() => setFilter("all")}
                             className={`px-3 py-1 rounded-full text-sm transition-colors ${filter === "all"
-                                    ? "bg-white text-black"
-                                    : "bg-gray-800 text-gray-400 hover:text-white"
+                                ? "bg-white text-black"
+                                : "bg-gray-800 text-gray-400 hover:text-white"
                                 }`}
                         >
                             All
@@ -73,8 +104,8 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
                         <button
                             onClick={() => setFilter("unread")}
                             className={`px-3 py-1 rounded-full text-sm transition-colors ${filter === "unread"
-                                    ? "bg-white text-black"
-                                    : "bg-gray-800 text-gray-400 hover:text-white"
+                                ? "bg-white text-black"
+                                : "bg-gray-800 text-gray-400 hover:text-white"
                                 }`}
                         >
                             Unread
@@ -109,8 +140,8 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
                                     key={notification.notificationId}
                                     onClick={() => handleNotificationClick(notification)}
                                     className={`p-3 rounded-lg cursor-pointer transition-colors ${notification.isRead
-                                            ? "bg-gray-900 hover:bg-gray-800"
-                                            : "bg-gray-800 hover:bg-gray-700"
+                                        ? "bg-gray-900 hover:bg-gray-800"
+                                        : "bg-gray-800 hover:bg-gray-700"
                                         }`}
                                 >
                                     <div className="flex justify-between items-start gap-2">

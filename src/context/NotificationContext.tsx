@@ -51,6 +51,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             }
 
             console.log("Final notifs:", notifs);
+            notifs.forEach((n: any) => {
+                console.log(`Notification: ${n.title}, RelatedVideoId: ${n.relatedVideoId}`);
+            });
             setNotifications(notifs);
         } catch (error) {
             console.error("Error fetching notifications:", error);
