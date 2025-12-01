@@ -2,25 +2,30 @@
 
 import VideoApi from "@/lib/videoApi"
 import { VideoItems } from "@/types/video"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { VideoCard } from "./VideoCard"
 import ChannelApi from "@/lib/channelApi"
 import { ChannelResponse } from "@/types/channel"
 import { LiveStreamCard } from "./LiveStreamCard"
 
 export function MainVideoFrame() {
-    const [videos, setVideos] = useState([])
+    const [videos, setVideos] = useState<VideoItems[]>([])
     const [channels, setChannels] = useState<ChannelResponse[]>([])
+    const [offset, setOffset] = useState(40);
+    const [loading, setLoading] = useState(false);
+    const loaderRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const fetchVideos = async () => {
-            const response = await VideoApi.GetVideosTrending()
-            setVideos(response.data)
-            const resChannel = await ChannelApi.GetAllChannel()
-            setChannels(resChannel.data)
-        }
         fetchVideos()
     }, [])
+
+    const fetchVideos = async () => {
+        const resChannel = await ChannelApi.GetAllChannel()
+        setChannels(resChannel.data)
+        const response = await VideoApi.GetVideosTrending(offset)
+        setVideos(response.data)
+    }
+
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -34,7 +39,6 @@ export function MainVideoFrame() {
             {videos.map((video: VideoItems) => (
                 <VideoCard key={video.videoId} videoId={video.videoId} layout="vertical" limit={false}/>
             ))}
-            
         </div>        
     )
 }
