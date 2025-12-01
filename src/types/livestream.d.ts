@@ -9,6 +9,7 @@ export interface Livestream {
     viewerCount?: number;
     createdAt: string;
     endedAt?: string;
+    thumbnailUrl?: string;
 }
 
 export interface CreateLivestreamResponse {

@@ -4,8 +4,8 @@ import { useNotification } from "@/context/NotificationContext";
 import { Bell, X, Check, CheckCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Notification } from "@/types/notification";
+import Image from "next/image";
 
 interface NotificationPanelProps {
     isOpen: boolean;
@@ -145,7 +145,24 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
                                         : "bg-gray-800 hover:bg-gray-700"
                                         }`}
                                 >
-                                    <div className="flex justify-between items-start gap-2">
+                                    <div className="flex justify-between items-start gap-3">
+                                        {/* Avatar */}
+                                        <div className="flex-shrink-0">
+                                            {notification.actorAvatarUrl || notification.avatarUrl ? (
+                                                <img
+                                                    src={notification.actorAvatarUrl || notification.avatarUrl || ""}
+                                                    alt={notification.actorName || "User avatar"}
+                                                    className="w-10 h-10 rounded-full object-cover"
+                                                    onError={(e) => {
+                                                        (e.currentTarget as HTMLImageElement).src = "";
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
+                                                    <Bell className="w-5 h-5 text-gray-400" />
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="flex-1">
                                             <p className="text-white font-medium text-sm">
                                                 {notification.title}

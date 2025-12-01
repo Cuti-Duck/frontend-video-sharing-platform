@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, Copy, Check, Video, ExternalLink } from "lucide-react";
+import { X, Copy, Check, ExternalLink, Upload } from "lucide-react";
 import LivestreamApi from "@/lib/livestreamApi";
+import LivestreamMetadataApi from "@/lib/livestreamMetadataApi";
 import { useAuth } from "@/context/AuthContext";
+import { useLivestream } from "@/context/LiveStreamContext";
 
 interface CreateLivestreamModalProps {
     isOpen: boolean;
@@ -12,19 +14,44 @@ interface CreateLivestreamModalProps {
 }
 
 export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestreamModalProps) {
-    const {user} = useAuth()
+    const { user } = useAuth()
+    const { setStreamInfo } = useLivestream()
     const router = useRouter();
     const [step, setStep] = useState<"form" | "result">("form");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
     const [isCreating, setIsCreating] = useState(false);
-    const [streamInfo, setStreamInfo] = useState<{
+    const [streamInfo, setStreamInfoLocal] = useState<{
         streamKey: string;
         ingestServer: string;
         playbackUrl: string;
+        thumbnailUrl?: string;
     } | null>(null);
     const [copied, setCopied] = useState<"key" | "url" | "playback" | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (!file.type.startsWith('image/')) {
+                setError("Please select an image file");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                setError("File size must be less than 5MB");
+                return;
+            }
+            setThumbnail(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setThumbnailPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+            setError(null);
+        }
+    };
 
     const handleCreateLivestream = async () => {
         if (!title.trim()) {
@@ -36,31 +63,69 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
         setError(null);
 
         try {
-            const response = await LivestreamApi.CreateLivestream({
+            // Step 1: Tạo livestream (lấy streamKey, ingestServer, playbackUrl)
+            console.log("📝 Step 1: Creating livestream...");
+            const createResponse = await LivestreamApi.CreateLivestream({
                 title: title.trim(),
                 description: description.trim(),
             });
-            const data = response.data;
+            const livestreamData = createResponse.data;
 
-            console.log("Livestream data:", data);
+            console.log("✅ Livestream created:", livestreamData);
 
+            // Step 2: Upload metadata (title, description, thumbnail)
+            console.log("📝 Step 2: Uploading metadata...");
+            const metadataResponse = await LivestreamMetadataApi.CreateMetadata(
+                livestreamData.livestreamId,
+                {
+                    title: title.trim(),
+                    description: description.trim(),
+                    thumbnail: thumbnail || undefined,
+                }
+            );
+
+            console.log("✅ Metadata uploaded:", metadataResponse.data);
+
+            // Combine responses
+            const streamData = {
+                streamKey: livestreamData.streamKey,
+                ingestServer: livestreamData.ingestServer,
+                playbackUrl: livestreamData.playbackUrl,
+                thumbnailUrl: metadataResponse.data.thumbnailUrl,
+            };
+
+            setStreamInfoLocal(streamData);
+
+            // Save to localStorage
+            const fullData = {
+                livestreamId: livestreamData.livestreamId,
+                playbackUrl: livestreamData.playbackUrl,
+                title: title.trim(),
+                description: description.trim(),
+                thumbnailUrl: metadataResponse.data.thumbnailUrl,
+                streamKey: livestreamData.streamKey,
+                ingestServer: livestreamData.ingestServer,
+                createdAt: new Date().toISOString(),
+            };
+
+            console.log("💾 Saving to localStorage:", fullData);
+            localStorage.setItem("myLivestream", JSON.stringify(fullData));
+
+            // Update context
             setStreamInfo({
-                streamKey: data.streamKey,
-                ingestServer: data.ingestServer,
-                playbackUrl: data.playbackUrl,
-            });
+                playbackUrl: fullData.playbackUrl,
+                title: fullData.title,
+                description: fullData.description,
+                thumbnailUrl: fullData.thumbnailUrl,
+            })
 
-            localStorage.setItem("myLivestream", JSON.stringify({
-                playbackUrl: data.playbackUrl,
-                title: title.trim(),
-                description: description.trim(),
-            }));
+            console.log("🔄 Context updated");
 
             window.dispatchEvent(new Event("livestreamCreated"));
 
             setStep("result");
         } catch (err) {
-            console.error("Error creating livestream:", err);
+            console.error("❌ Error creating livestream:", err);
             setError("Không thể tạo livestream. Vui lòng thử lại!");
         } finally {
             setIsCreating(false);
@@ -79,8 +144,6 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
 
     const handleGoToStream = () => {
         if (streamInfo?.playbackUrl) {
-            // const encodedUrl = encodeURIComponent(streamInfo.playbackUrl);
-            // const encodedTitle = encodeURIComponent(title);
             router.push(`/live/${user?.userId}`);
             handleClose();
         }
@@ -90,7 +153,9 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
         setStep("form");
         setTitle("");
         setDescription("");
-        setStreamInfo(null);
+        setThumbnail(null);
+        setThumbnailPreview("");
+        setStreamInfoLocal(null);
         setError(null);
         onClose();
     };
@@ -113,10 +178,9 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                     </button>
                 </div>
 
-                {/* Step 1: Form nhập thông tin */}
+                {/* Step 1: Form */}
                 {step === "form" && (
                     <div className="space-y-6">
-                        {/* Title */}
                         <div>
                             <label className="block text-gray-400 text-sm mb-2">
                                 Livestream Title
@@ -125,6 +189,7 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Enter livestream title..."
                                 className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                                 maxLength={100}
                             />
@@ -133,7 +198,6 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             </p>
                         </div>
 
-                        {/* Description */}
                         <div>
                             <label className="block text-gray-400 text-sm mb-2">
                                 Description
@@ -141,6 +205,7 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Enter livestream description..."
                                 rows={4}
                                 className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                                 maxLength={500}
@@ -150,11 +215,53 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             </p>
                         </div>
 
+                        <div>
+                            <label className="block text-gray-400 text-sm mb-2">
+                                Thumbnail (Optional)
+                            </label>
+                            <div className="space-y-3">
+                                <label className="flex-1 flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg cursor-pointer transition-colors">
+                                    <Upload className="w-5 h-5" />
+                                    <span>Choose Image</span>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleThumbnailChange}
+                                        className="hidden"
+                                    />
+                                </label>
+
+                                {thumbnailPreview && (
+                                    <div className="relative w-full aspect-video bg-gray-800 rounded-lg overflow-hidden">
+                                        <img
+                                            src={thumbnailPreview}
+                                            alt="Thumbnail preview"
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                setThumbnail(null);
+                                                setThumbnailPreview("");
+                                            }}
+                                            className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                )}
+
+                                {thumbnail && (
+                                    <p className="text-gray-500 text-xs">
+                                        Selected: {thumbnail.name}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
                         {error && (
                             <p className="text-red-500 text-sm">{error}</p>
                         )}
 
-                        {/* Create Button */}
                         <button
                             onClick={handleCreateLivestream}
                             disabled={isCreating || !title.trim()}
@@ -176,17 +283,25 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                     </div>
                 )}
 
-                {/* Step 2: Kết quả */}
+                {/* Step 2: Result */}
                 {step === "result" && streamInfo && (
                     <div className="space-y-6">
-                        {/* Success Message */}
                         <div className="bg-green-900/30 border border-green-600 rounded-lg p-4">
                             <p className="text-green-400 text-center font-medium">
-                                Livestream {title} created successfully!
+                                Livestream "{title}" created successfully!
                             </p>
                         </div>
 
-                        {/* Ingest Server (Stream URL) */}
+                        {streamInfo.thumbnailUrl && (
+                            <div className="w-full aspect-video rounded-lg overflow-hidden">
+                                <img
+                                    src={streamInfo.thumbnailUrl}
+                                    alt="Livestream thumbnail"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
+
                         <div>
                             <label className="block text-gray-400 text-sm mb-2">
                                 Server URL (RTMPS)
@@ -211,7 +326,6 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             </div>
                         </div>
 
-                        {/* Stream Key */}
                         <div>
                             <label className="block text-gray-400 text-sm mb-2">
                                 Stream Key
@@ -239,10 +353,9 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             </p>
                         </div>
 
-                        {/* Playback URL */}
                         <div>
                             <label className="block text-gray-400 text-sm mb-2">
-                                Playback URL (Link xem stream)
+                                Playback URL
                             </label>
                             <div className="flex items-center gap-2">
                                 <input
@@ -264,19 +377,6 @@ export default function CreateLivestreamModal({ isOpen, onClose }: CreateLivestr
                             </div>
                         </div>
 
-                        {/* Instructions */}
-                        <div className="bg-gray-800 rounded-lg p-4">
-                            <h3 className="text-white font-medium mb-2">Hướng dẫn OBS:</h3>
-                            <ol className="text-gray-400 text-sm space-y-1 list-decimal list-inside">
-                                <li>Open OBS → Settings → Stream</li>
-                                <li>Service: <span className="text-white">Custom</span></li>
-                                <li>Server: <span className="text-white">Paste Server URL above</span></li>
-                                <li>Stream Key: <span className="text-white">Paste Stream Key above</span></li>
-                                <li>Click <span className="text-green-400">Start Streaming</span></li>
-                            </ol>
-                        </div>
-
-                        {/* Action Buttons */}
                         <div className="flex gap-3">
                             <button
                                 onClick={handleClose}

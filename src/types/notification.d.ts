@@ -11,6 +11,9 @@ export interface Notification {
   isRead: boolean;
   createdAt: string;
   actionUrl?: string;
+  avatarUrl?: string
+  actorAvatarUrl?: string;
+  actorName?: string;
 }
 
 export interface NotificationResponse {

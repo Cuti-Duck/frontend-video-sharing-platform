@@ -9,8 +9,9 @@ interface LivestreamContextType {
         playbackUrl: string;
         title?: string;
         description?: string;
+        thumbnailUrl?: string;
     } | null;
-    setStreamInfo: (info: { playbackUrl: string; title?: string; description?: string } | null) => void;
+    setStreamInfo: (info: { playbackUrl: string; title?: string; description?: string; thumbnailUrl?: string; } | null) => void;
 }
 
 const LivestreamContext = createContext<LivestreamContextType | undefined>(undefined);
@@ -21,6 +22,7 @@ export function LivestreamProvider({ children }: { children: ReactNode }) {
         playbackUrl: string;
         title?: string;
         description?: string;
+        thumbnailUrl?: string;
     } | null>(null);
 
     // Load từ localStorage khi mount
