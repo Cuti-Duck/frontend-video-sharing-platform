@@ -1,7 +1,10 @@
 import { ChannelCard } from "@/components/ChannelCard";
 import { LiveStreamPlayer } from "@/components/LiveStreamPlayer";
 import { SubscribeButton } from "@/components/SubscribeButton";
+import { VideoCard } from "@/components/VideoCard";
 import UserApi from "@/lib/userApi";
+import VideoApi from "@/lib/videoApi";
+import { VideoItems } from "@/types/video";
 
 interface LivePageProps {
   params: { id: string };
@@ -10,6 +13,7 @@ interface LivePageProps {
 export default async function LivePage({ params }: LivePageProps) {
     const { id } = await params;
     const user = await UserApi.GetUserById(id)
+    const videos = await VideoApi.GetVideosTrending(40)
 
     return (
         <div>
@@ -26,6 +30,12 @@ export default async function LivePage({ params }: LivePageProps) {
                         <SubscribeButton channelId={user.data.data.channelId} />
                     </div>
                     </div>
+                </div>
+
+                <div className="flex flex-col lg:col-span-3 gap-2">
+                    {videos.data.map((v: VideoItems) => (
+                        <VideoCard key={v.videoId} videoId={v.videoId} layout="horizontal" limit={true}/>
+                    ))}
                 </div>
             </div>
         </div>
