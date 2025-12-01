@@ -26,8 +26,8 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
         }
 
         const videoId =
-            notification.relatedVideoId 
-            // || notification.videoId
+            notification.relatedVideoId
+            || notification.videoId
 
 
         if (videoId) {
