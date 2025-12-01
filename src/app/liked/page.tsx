@@ -55,10 +55,10 @@ export default function LikedVideosPage() {
     // Loading state
     if (authLoading || isLoading) {
         return (
-            <div className="min-h-screen bg-black p-6">
+            <div className="min-h-screen p-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex items-center gap-3 mb-6">
-                        <ThumbsUp className="w-8 h-8 text-blue-500" />
+                        <ThumbsUp className="w-8 h-8 text-orange-300" />
                         <h1 className="text-2xl font-bold text-white">Video đã thích</h1>
                     </div>
                     <div className="flex justify-center py-20">
@@ -72,21 +72,15 @@ export default function LikedVideosPage() {
     // Not authenticated
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-black p-6">
+            <div className="min-h-screen p-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex items-center gap-3 mb-6">
-                        <ThumbsUp className="w-8 h-8 text-blue-500" />
+                        <ThumbsUp className="w-8 h-8 text-orange-300" />
                         <h1 className="text-2xl font-bold text-white">Video đã thích</h1>
                     </div>
                     <div className="flex flex-col items-center justify-center py-20">
                         <ThumbsUp className="w-20 h-20 text-gray-600 mb-4" />
                         <p className="text-gray-400 text-lg mb-4">Đăng nhập để xem video đã thích</p>
-                        <Link
-                            href="/auth/login"
-                            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Đăng nhập
-                        </Link>
                     </div>
                 </div>
             </div>
@@ -96,10 +90,10 @@ export default function LikedVideosPage() {
     // Error state
     if (error) {
         return (
-            <div className="min-h-screen bg-black p-6">
+            <div className="min-h-screen p-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex items-center gap-3 mb-6">
-                        <ThumbsUp className="w-8 h-8 text-blue-500" />
+                        <ThumbsUp className="w-8 h-8 text-orange-300" />
                         <h1 className="text-2xl font-bold text-white">Video đã thích</h1>
                     </div>
                     <div className="flex flex-col items-center justify-center py-20">
@@ -119,10 +113,10 @@ export default function LikedVideosPage() {
     // Empty state
     if (likedVideos.length === 0) {
         return (
-            <div className="min-h-screen bg-black p-6">
+            <div className="min-h-screen p-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex items-center gap-3 mb-6">
-                        <ThumbsUp className="w-8 h-8 text-blue-500" />
+                        <ThumbsUp className="w-8 h-8 text-orange-300" />
                         <h1 className="text-2xl font-bold text-white">Video đã thích</h1>
                     </div>
                     <div className="flex flex-col items-center justify-center py-20">
@@ -137,12 +131,12 @@ export default function LikedVideosPage() {
 
     // Success state with videos
     return (
-        <div className="min-h-screen bg-black p-6">
+        <div className="min-h-screen p-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <ThumbsUp className="w-8 h-8 text-blue-500" />
+                        <ThumbsUp className="w-8 h-8 text-orange-300" />
                         <div>
                             <h1 className="text-2xl font-bold text-white">Video đã thích</h1>
                             <p className="text-gray-400 text-sm">{totalCount} video</p>

@@ -17,7 +17,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const { id } = await params;
   const video = await VideoApi.GetVideoById(id)
   const user = await UserApi.GetUserById(video.data.userId)
-  const videos = await VideoApi.GetVideos()
+  const videos = await VideoApi.GetVideosTrending(40)
   const relatedVideos = videos.data.filter((v: VideoItems) => v.videoId !== video.data.videoId)
   
 

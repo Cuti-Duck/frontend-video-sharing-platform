@@ -5,8 +5,8 @@ import axios, { AxiosProgressEvent } from "axios";
 const VideoApi = {
     GetVideos: async () => axiosClient.get("/videos/all"),
 
-    GetVideosTrending: async () => {
-        const params = { limit: 20 }
+    GetVideosTrending: async (offset: number) => {
+        const params = { limit: offset }
         return axiosClient.get("/videos/trending", { params })
     },
 
