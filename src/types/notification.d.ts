@@ -6,6 +6,7 @@ export interface Notification {
   message: string;
   relatedUserId?: string;
   relatedVideoId?: string;
+  videoId?: string;
   relatedCommentId?: string;
   isRead: boolean;
   createdAt: string;
